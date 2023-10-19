@@ -1,3 +1,5 @@
+const { addData } = require('./index');
+
 const mqtt = require("mqtt");
 const options = {
     username: 'green',
@@ -13,11 +15,11 @@ const thingy_notification = 'green-2';
 // Handle connection events
 
 client.on('connect', () => {
-    console.log('Hooray! Connected to the MQTT broker! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧');
+    console.log('Connection with the MQTT broker ' + serverIP + ' established!');
 });
 
 client.on('error', (error) => {
-    console.error('Oopsie! Something went wrong. (╥﹏╥)');
+    console.error('Something went wrong.');
     console.error(error);
 });
 
@@ -35,6 +37,7 @@ client.on('connect', () => {
 // Handle incoming messages
 client.on('message', (topic, message) => {
     console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
+    addData(topic, message);
 });
 
 
