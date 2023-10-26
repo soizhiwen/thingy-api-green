@@ -3,7 +3,7 @@ const router = require('koa-router')();
 
 
 router.get('/users/', listUsers)
-    .post('users/admin',registerAdmin)
+    .post('/users/admin/',registerAdmin)
     .post('/users/', addUser)
     .patch('/users/:id', updateUser)
     .del('/users/:id', removeUser);
