@@ -1,8 +1,6 @@
 const router = require("koa-router")();
-const ctrl = require("../controllers/greenhouse-controller");
+const { listPlants, getData } = require("../controllers/greenhouse-controller");
 
-router
-  .get("/greenhouse/plants/:id", ctrl.listPlants)
-  .get("/greenhouse/", ctrl.getData);
+router.get("/greenhouse/plants/:id", listPlants).get("/greenhouse/", getData);
 
 module.exports = router;

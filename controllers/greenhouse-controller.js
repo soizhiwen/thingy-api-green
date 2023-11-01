@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Point } = require("@influxdata/influxdb-client");
 const { writeClient, queryClient } = require("../models");
 
+const bucket = process.env.INFLUX_BUCKET;
 const thingyMonitor = process.env.THINGY_MONITOR;
 
 async function listPlants(ctx) {
@@ -10,13 +11,20 @@ async function listPlants(ctx) {
 }
 
 async function getData(ctx) {
-  console.log("GET request to get Data received!");
-  //let nbDataPoints = ctx.body.nbDP;
-  //let valueType = ctx.body.vType;
+  const result = [];
+  const fluxQuery = `from(bucket: "${bucket}")
+  |> range(start: 0)
+  |> filter(fn: (r) => r["_measurement"] == "mqtt_message")
+  |> filter(fn: (r) => r["thingy_id"] == "${thingyMonitor}")
+  |> filter(fn: (r) => r["app_id"] == "AIR_QUAL" or r["app_id"] == "CO2_EQUIV" or r["app_id"] == "TEMP" or r["app_id"] == "HUMID")
+  |> last()`;
 
-  // GET size = nbDataPoints of value = valueType from DB
-
-  let result = "TheDataBaseCall";
+  for await (const { values, tableMeta } of queryClient.iterateRows(
+    fluxQuery
+  )) {
+    const o = tableMeta.toObject(values);
+    result.push(o);
+  }
 
   ctx.body = result;
 }
