@@ -11,7 +11,7 @@ async function listPlants(ctx) {
 }
 
 async function getData(ctx) {
-  const result = [];
+  const result = {};
   const fluxQuery = `from(bucket: "${bucket}")
   |> range(start: 0)
   |> filter(fn: (r) => r["_measurement"] == "mqtt_message")
@@ -23,7 +23,8 @@ async function getData(ctx) {
     fluxQuery
   )) {
     const o = tableMeta.toObject(values);
-    result.push(o);
+    result[o.app_id] = o._value;
+    result.timestamp = o._time;
   }
 
   ctx.body = result;
