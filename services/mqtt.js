@@ -1,4 +1,4 @@
-const { dbAddData } = require("../services/db-greenhouse");
+const { dbAddData } = require("../services/db-mqtt");
 
 const mqtt = require("mqtt");
 const options = {
@@ -51,21 +51,9 @@ async function initMQTT() {
   process.on("SIGINT", () => {
     client.end();
   });
+
 }
 
 module.exports = initMQTT;
 
-/*
 
-const payload = '{"appId":"BUZZER","data":{"frequency":2000},"messageType":"CFG_SET"}';
-const topic_LED = 'things/green-1/shadow/update/accepted/';
-
-async function send() {
-    console.log("Message");
-    client.publish(topic_LED, JSON.stringify(payload));
-};
-// Publish a message
-//client.publish(topicName, JSON.stringify(payload), {qos: 1, retain: true}
-setTimeout(send, 2000);
-
- */

@@ -1,6 +1,5 @@
-
 const router = require("koa-router")();
-const { dbListPlants, dbGetData } = require("../services/db-greenhouse");
+const { dbListPlantsInGh, dbGetData } = require("../services/db-greenhouse");
 
 router.get("/greenhouse/plants/:id", listPlants).get("/greenhouse/", getData);
 
@@ -8,7 +7,7 @@ router.get("/greenhouse/plants/:id", listPlants).get("/greenhouse/", getData);
 
 async function listPlants(ctx) {
 
-  const result = await dbListPlants();
+  const result = await dbListPlantsInGh();
 
   ctx.body = result;
   ctx.status = 200;
