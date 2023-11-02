@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 const { Point } = require("@influxdata/influxdb-client");
 const { writeClient, queryClient } = require("../models/database");
@@ -11,7 +12,7 @@ async function dbListPlants(ctx) {
     // Return all plants
   }
 
-async function dbGetData(ctx) {
+async function dbGetData() {
     const result = {};
     const fluxQuery = `from(bucket: "${bucket}")
     |> range(start: 0)
@@ -28,7 +29,7 @@ async function dbGetData(ctx) {
       result.timestamp = o._time;
     }
     
-    ctx.body = result;
+    return result;
   }
   
   async function dbAddData(message) {

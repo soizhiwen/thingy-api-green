@@ -13,7 +13,7 @@ router.get('/plants/', listPlants)
 
 async function listPlants(ctx) {
     console.log("GET request to list all plants received!");
-    const {status, plants} = dbListPlants();
+    const {status, plants} = await dbListPlants();
 
     // Return all plants
     ctx.body = plants;
@@ -22,10 +22,10 @@ async function listPlants(ctx) {
 
 async function addPlant(ctx) {
     console.log("POST request to add a plants received!");
-    const plantParams = ctx.params;
+    const plantParams = ctx.request.body;
 
     // Call DB Function
-    const status = dbAddPlant(plantParams);
+    const status = await dbAddPlant(plantParams);
     ctx.status = status;
 }
 
@@ -36,16 +36,16 @@ async function updatePlant(ctx) {
     const data = ctx.request.body;
 
     // Update in DB
-    const status = dbUpdatePlant(plantId, data);
+    const status = await dbUpdatePlant(plantId, data);
     ctx.status = status; 
 }
 
 async function removePlant(ctx) {
     console.log("DELETE request received!");
-    const plantId = ctx.params.plantId;
+    const plantId = ctx.params.id;
 
     // Remove plant from DB
-    const status = dbRemovePlant(plantId);
+    const status = await dbRemovePlant( plantId);
     ctx.status = status;
 }
 

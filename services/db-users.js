@@ -9,7 +9,7 @@ async function dbListUsers() {
     // Retrieve Users list from DB
     
     
-    var status = 501;
+    let status = 501;
     return {status, users};
 }
 

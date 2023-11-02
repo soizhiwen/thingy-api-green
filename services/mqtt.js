@@ -44,7 +44,7 @@ async function initMQTT() {
   // Handle incoming messages
   client.on("message", (topic, message) => {
     console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
-    greenhouseController.dbAddData(message);
+    dbAddData(message);
   });
 
   // Disconnect when done

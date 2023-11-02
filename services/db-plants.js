@@ -5,7 +5,7 @@ async function dbListPlants() {
     // Retrieve Plants list from DB
     
     
-    var status = 501;
+    let status = 501;
     return {status, plants};
 }
 
@@ -31,7 +31,7 @@ async function dbUpdatePlant(plantId, data) {
 
 
 async function dbRemovePlant(plantId) {
-
+    console.log("Plant ID: " + plantId);
     // Remove plant (plantId) from DB
 
     // if (ok) {return 210}

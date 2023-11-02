@@ -8,16 +8,18 @@ router.get("/greenhouse/plants/:id", listPlants).get("/greenhouse/", getData);
 
 async function listPlants(ctx) {
 
-  dbListPlants();
+  const result = await dbListPlants();
 
-
+  ctx.body = result;
+  ctx.status = 200;
 }
 
 async function getData(ctx) {
 
-  dbGetData(ctx);
+  const result = await dbGetData();
 
-
+  ctx.body = result;
+  ctx.status = 200;
 }
 
 
