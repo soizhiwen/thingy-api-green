@@ -32,11 +32,11 @@ async function addPlant(ctx) {
 async function updatePlant(ctx) {
     console.log("PATCH request to change a plant's value received!");
 
-    const plantId = ctx.request.plantId;
-    const data = ctx.request.body;
+    const plantId = ctx.params.id;
+    const updateParams = ctx.request.body;
 
     // Update in DB
-    const status = await dbUpdatePlant(plantId, data);
+    const status = await dbUpdatePlant(plantId, updateParams);
     ctx.status = status; 
 }
 

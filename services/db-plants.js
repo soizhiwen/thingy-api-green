@@ -1,5 +1,7 @@
 
+
 async function dbListPlants() {
+    console.log("Received List Plants request.")
     const plants = {};
 
     // Retrieve Plants list from DB
@@ -10,8 +12,11 @@ async function dbListPlants() {
 }
 
 
-async function dbAddPlant(plandId, name, temp, humidity, co2, airQual, growDuration) {
-
+async function dbAddPlant(plantParams) {
+    console.log("Received Add Plant Request with various data: " +
+        plantParams.name + " " + plantParams.temp + " " + plantParams.humidity + " " +
+        plantParams.co2 + " " + plantParams.airQual + " " + plantParams.growDuration);
+    const plandId = "A Plant ID";
     // Add Plant to DB
 
     // if (ok) {return 201}
@@ -20,8 +25,10 @@ async function dbAddPlant(plandId, name, temp, humidity, co2, airQual, growDurat
 }
 
 
-async function dbUpdatePlant(plantId, data) {
-
+async function dbUpdatePlant(plantId, updateParams) {
+    console.log("Received Update Plant request with plant ID and data: " + plantId + " " +
+        updateParams.name + " " + updateParams.temp + " " + updateParams.humidity + " " +
+        updateParams.co2 + " " + updateParams.airQual + " " + updateParams.growDuration);
     // Update pland (plandID) with provided data
     // if (ok) {return 210}
     // else {return 500}
