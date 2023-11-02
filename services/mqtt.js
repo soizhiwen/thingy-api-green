@@ -1,4 +1,4 @@
-const greenhouseController = require("./greenhouse-controller");
+const { dbAddData } = require("../services/db-greenhouse");
 
 const mqtt = require("mqtt");
 const options = {
@@ -44,7 +44,7 @@ async function initMQTT() {
   // Handle incoming messages
   client.on("message", (topic, message) => {
     console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
-    greenhouseController.addData(message);
+    greenhouseController.dbAddData(message);
   });
 
   // Disconnect when done
