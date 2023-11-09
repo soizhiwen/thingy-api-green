@@ -1,5 +1,7 @@
-const {writeClient} = require("../models/database");
-const {Point} = require("@influxdata/influxdb-client");
+const { writeClient } = require("../models/database");
+const { Point } = require("@influxdata/influxdb-client");
+
+const thingyMonitor = process.env.THINGY_MONITOR;
 
 async function dbAddData(message) {
     const messageJson = JSON.parse(message.toString());
