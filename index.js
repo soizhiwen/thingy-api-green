@@ -1,4 +1,4 @@
-const { writeClient, queryClient } = require("./models");
+const { writeClient, queryClient } = require("./models/database");
 
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
@@ -6,12 +6,12 @@ const cors = require("@koa/cors");
 
 const app = new Koa();
 
-const initMQTT = require("./controllers/mqtt-controller");
+const initMQTT = require("./services/mqtt");
 
 //Adding the routes
 const plantsRouter = require("./controllers/plants-controller");
 const usersRouter = require("./controllers/users-controller");
-const greenhouseRouter = require("./routers/greenhouse-router");
+const greenhouseRouter = require("./controllers/greenhouse-controller");
 
 initMQTT();
 
