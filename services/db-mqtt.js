@@ -1,9 +1,9 @@
 const {writeClient} = require("../models/database");
 const {Point} = require("@influxdata/influxdb-client");
 
-async function dbAddData(message) {
+async function dbAddData(message, thingy_monitor) {
     const messageJson = JSON.parse(message.toString());
-    writeClient.useDefaultTags({ thingy_id: thingyMonitor });
+    writeClient.useDefaultTags({ thingy_id: thingy_monitor });
     const point = new Point("mqtt_message").tag("app_id", messageJson.appId);
     let fields;
     if (messageJson.appId === "LIGHT") {
