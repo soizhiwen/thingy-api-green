@@ -15,20 +15,6 @@ const thingy_notification = "green-1";
 const topicSubscribe = "things/" + thingy_monitor + "/shadow/update";
 const topicPublish = 'things/' + thingy_notification + '/shadow/update/accepted';
 
-test();
-
-async function test() {
-  initMQTT();
-  await sleep(5000);
-  enableBuzzer();
-  await sleep(5000);
-  disableBuzzer();
-  await sleep(5000);
-  setLEDRed();
-  await sleep(5000);
-  setLEDBlue();
-};
-
 
 // Handle connection events
 async function initMQTT() {
@@ -60,7 +46,7 @@ async function initMQTT() {
   // Handle incoming messages
   client.on("message", (topic, message) => {
     console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
-    //dbAddData(message, thingy_monitor);
+    dbAddData(message, thingy_monitor);
   });
 
   // Disconnect when done
@@ -102,19 +88,11 @@ async function setLEDBlue() {
 
 
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function sleep(ms) {
-  console.log("Senpai, I'll wait for " + ms/1000 + "seconds! ☆〜（ゝ。∂）");
-
-  await delay(ms); // Here we wait for 2 seconds (2000 milliseconds)
-
-  console.log("Yay! " + ms/1000 + "seconds have passed! ٩(◕‿◕｡)۶");
-}
-
-
-module.exports = { enableBuzzer, disableBuzzer, setLEDRed, setLEDBlue, initMQTT };
+module.exports = {
+  enableBuzzer,
+  disableBuzzer,
+  setLEDRed,
+  setLEDBlue,
+  initMQTT };
 
 

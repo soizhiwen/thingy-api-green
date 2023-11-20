@@ -1,4 +1,4 @@
-const {writeClient} = require("../models/database");
+const {writeClient} = require("../models/influx");
 const {Point} = require("@influxdata/influxdb-client");
 
 async function dbAddData(message, thingy_monitor) {
