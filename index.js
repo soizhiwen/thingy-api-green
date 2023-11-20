@@ -1,4 +1,3 @@
-const { writeClient, queryClient } = require("./models/influx");
 
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");

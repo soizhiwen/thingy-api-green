@@ -17,11 +17,9 @@
     "dotenv": "^16.3.1",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.1",
-    "koa-oauth-server": "^1.0.1",
     "koa-router": "^11.0.2",
     "mqtt": "^5.1.2",
     "nodemon": "^3.0.1",
-    "oauth2-server": "^3.1.1",
-    "pg-promise": "^11.5.4"
+    "pg": "^8.11.3"
   }
 }
