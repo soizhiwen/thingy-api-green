@@ -4,16 +4,15 @@ const pool = new Pool();
 async function createPlantsTable() {
   try {
     const query = `
-      CREATE TABLE IF NOT EXISTS public.plants
+      CREATE TABLE IF NOT EXISTS plants
       (
-        id integer NOT NULL DEFAULT nextval('plants_id_seq'::regclass),
-        name character varying COLLATE pg_catalog."default",
-        harvest_date timestamp with time zone,
-        temperature numeric,
-        humidity numeric,
-        co2 numeric,
-        airquality numeric,
-        CONSTRAINT plants_pkey PRIMARY KEY (id)
+        id SERIAL PRIMARY KEY, 
+        name VARCHAR NOT NULL,
+        harvest_date TIMESTAMP WITH TIME ZONE NOT NULL,
+        temperature NUMERIC NOT NULL,
+        humidity NUMERIC NOT NULL,
+        co2 NUMERIC NOT NULL,
+        airquality NUMERIC NOT NULL
       );
       `;
 
@@ -28,13 +27,12 @@ async function createPlantsTable() {
 async function createUsersTable() {
   try {
     const query = `
-      CREATE TABLE IF NOT EXISTS public.users
+      CREATE TABLE IF NOT EXISTS users
       (
-        id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
-        name character varying COLLATE pg_catalog."default",
-        email character varying COLLATE pg_catalog."default",
-        role character varying COLLATE pg_catalog."default",
-        CONSTRAINT users_pkey PRIMARY KEY (id)
+        id SERIAL PRIMARY KEY,
+        name VARCHAR NOT NULL,
+        email VARCHAR NOT NULL,
+        role VARCHAR NOT NULL
       );
       `;
 
