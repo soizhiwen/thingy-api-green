@@ -12,7 +12,7 @@ async function createPlantsTable() {
         temperature NUMERIC NOT NULL,
         humidity NUMERIC NOT NULL,
         co2 NUMERIC NOT NULL,
-        airquality NUMERIC NOT NULL
+        air_quality NUMERIC NOT NULL
       );
       `;
 
