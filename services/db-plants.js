@@ -8,8 +8,7 @@ async function dbListPlants() {
     const { rows } = await pool.query(query);
     return { status: 200, body: rows };
   } catch (err) {
-    console.log(err);
-    return 500;
+    return { status: 500, body: err };
   }
 }
 
@@ -29,10 +28,9 @@ async function dbCreatePlant(params) {
       ],
     };
     const { rows } = await pool.query(query);
-    return { status: 201, body: rows };
+    return { status: 201, body: rows[0] };
   } catch (err) {
-    console.log(err);
-    return 501;
+    return { status: 501, body: err };
   }
 }
 
@@ -55,13 +53,12 @@ async function dbUpdatePlant(id, params) {
     const { rows } = await pool.query(query);
 
     if (rows.length === 0) {
-      return 404;
+      return { status: 404, body: "Not found" };
     }
 
-    return { status: 200, body: rows };
+    return { status: 200, body: rows[0] };
   } catch (err) {
-    console.log(err);
-    return 500;
+    return { status: 500, body: err };
   }
 }
 
@@ -76,13 +73,12 @@ async function dbDeletePlant(id) {
     const { rows } = await pool.query(query);
 
     if (rows.length === 0) {
-      return 404;
+      return { status: 404, body: "Not found" };
     }
 
     return { status: 200, body: rows[0].id };
   } catch (err) {
-    console.log(err);
-    return 500;
+    return { status: 500, body: err };
   }
 }
 
