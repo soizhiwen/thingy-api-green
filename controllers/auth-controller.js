@@ -1,10 +1,10 @@
 const router = require('koa-router')();
 
 const { createToken, verifyToken } = require('../services/auth-JWT');
-const { dbAddAdmin, dbGetUserByUsername} = require("../services/db-users");
+const { dbCreateUser, dbGetUserByEmail } = require("../services/db-users");
 
-router.post('/login/user/', checkLoginUser)
-    .post('/login/admin/', checkLoginAdmin)
+router.post('/login/', checkLogin)
+    //.post('/login/admin/', checkLoginAdmin)
     .post('/register/admin/', registerAdmin);
 
 
@@ -14,35 +14,28 @@ async function registerAdmin(ctx) {
 
     // Call DB Function
     // IMPORTANT: NEED TO CHECK FOR DOUBLE USERS
-    const {status, adminId} = await dbAddAdmin(adminParams);
+    const { status, data } = await dbCreateUser(adminParams);
     if (status === 201) {
-        const token = createToken(adminId, adminParams.name);
-
+        const token = createToken(data.id, data.name, data.role);
         ctx.set('authorization', token);
-        ctx.body = adminId;
+        ctx.body = data.id;
     }
     ctx.status = status;
 }
 
 
-async function checkLoginUser(ctx) {
-    const username = ctx.request.body.name
-    const { status, data } = dbGetUserByUsername(username);
+async function checkLogin(ctx) {
+    const email = ctx.request.body.email;
+    const pw = ctx.request.body.pw;
+    const { status, data } = dbGetUserByEmail(email);
     console.log(data);
 
-    if (status === 201) {
-        const token = await createToken(data.id, username);
+    if (status === 201 && pw === data.password) {
+        // User Authenticated; Create Authorization Token
+        const token = await createToken(data.id, data.name, data.role);
         ctx.set('authorization', token);
+        ctx.body.role = data.role;
     }
     ctx.status = status;
 }
 
-
-
-
-async function checkLoginAdmin(ctx) {
-
-
-
-
-}

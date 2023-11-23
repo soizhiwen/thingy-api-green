@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 // Secret key for JWT
-const jwtSecret = 'dick123';
+const jwtSecret = 'ASecret';
+//const jwtSecretAdmin = 'AdminSecret';
 
-async function createToken (userId, username) {
-    const user = { id: userId, username: username };
+async function createToken (userId, username, role) {
+    //const user = { id: userId, username: username };
     // Create a JWT
-    const token = jwt.sign({ sub: user.id, username: user.username }, jwtSecret, { expiresIn: '1h' });
+    const token = jwt.sign({ sub: userId, username: username, role: role }, jwtSecret, { expiresIn: '1h' });
 
    return token;
 }
@@ -14,9 +15,9 @@ async function createToken (userId, username) {
 
 // Middleware for verifying a JWT
 async function verifyToken (ctx, next) {
-    //console.log(ctx.headers.authorization);
+
     const token = ctx.headers.authorization;
-    //console.log(token);
+
     if (!token) {
         ctx.status = 401;
         ctx.body = { error: 'Unauthorized - Missing Token' };
@@ -26,7 +27,7 @@ async function verifyToken (ctx, next) {
     try {
         // Verify the JWT
         const decoded = jwt.verify(token, jwtSecret);
-        ctx.state.user = decoded; // Attach user data to the context state
+        //ctx.state.role = decoded.role; // Attach user data to the context state
         ctx.status = 200;
         await next();
     } catch (err) {
@@ -36,4 +37,32 @@ async function verifyToken (ctx, next) {
 }
 
 
-module.exports = { createToken, verifyToken };
+async function verifyAdminToken(ctx, next) {
+    const token = ctx.headers.authorization;
+
+    if (!token) {
+        ctx.status = 401;
+        ctx.body = { error: 'Unauthorized - Missing Token' };
+        return;
+    }
+
+    try {
+        // Verify the JWT
+        const decoded = jwt.verify(token, jwtSecret);
+        //ctx.state.role = decoded.role; // Attach user data to the context state
+
+        if (decoded.role === 'Admin') {
+            ctx.status = 200;
+            await next();
+        } else {
+            ctx.status = 401;
+            ctx.body = { error: 'Unauthorized - Access Denied!' };
+        }
+    } catch (err) {
+        ctx.status = 401;
+        ctx.body = { error: 'Unauthorized - Invalid Token' };
+    }
+}
+
+
+module.exports = { createToken, verifyToken, verifyAdminToken };
