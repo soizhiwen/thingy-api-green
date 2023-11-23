@@ -1,53 +1,57 @@
-const router = require('koa-router')();
+const router = require("koa-router")();
 
-const {dbListPlants, dbAddPlant, dbUpdatePlant, dbRemovePlant} = require("../services/db-plants");
+const {
+  dbListPlants,
+  dbCreatePlant,
+  dbUpdatePlant,
+  dbDeletePlant,
+} = require("../services/db-plants");
 
-
-
-router.get('/plants/', listPlants)
-    .post('/plants/', addPlant)
-    .patch('/plants/:id', updatePlant)
-    .del('/plants/:id', removePlant);
-
-
+router
+  .get("/plants/", listPlants)
+  .post("/plants/", createPlant)
+  .patch("/plants/:id", updatePlant)
+  .del("/plants/:id", deletePlant);
 
 async function listPlants(ctx) {
-    console.log("GET request to list all plants received!");
-    const {status, plants} = await dbListPlants();
+  console.log("GET request to list all plants received!");
+  const { status, body } = await dbListPlants();
 
-    // Return all plants
-    ctx.body = plants;
-    ctx.status = status;
+  // Return all plants
+  ctx.body = body;
+  ctx.status = status;
 }
 
-async function addPlant(ctx) {
-    console.log("POST request to add a plants received!");
-    const plantParams = ctx.request.body;
+async function createPlant(ctx) {
+  console.log("POST request to add a plants received!");
+  const params = ctx.request.body;
 
-    // Call DB Function
-    const status = await dbAddPlant(plantParams);
-    ctx.status = status;
+  // Call DB Function
+  const { status, body } = await dbCreatePlant(params);
+  ctx.body = body;
+  ctx.status = status;
 }
 
 async function updatePlant(ctx) {
-    console.log("PATCH request to change a plant's value received!");
+  console.log("PATCH request to change a plant's value received!");
 
-    const plantId = ctx.params.id;
-    const updateParams = ctx.request.body;
+  const id = ctx.params.id;
+  const params = ctx.request.body;
 
-    // Update in DB
-    const status = await dbUpdatePlant(plantId, updateParams);
-    ctx.status = status; 
+  // Update in DB
+  const { status, body } = await dbUpdatePlant(id, params);
+  ctx.body = body;
+  ctx.status = status;
 }
 
-async function removePlant(ctx) {
-    console.log("DELETE request received!");
-    const plantId = ctx.params.id;
+async function deletePlant(ctx) {
+  console.log("DELETE request received!");
+  const id = ctx.params.id;
 
-    // Remove plant from DB
-    const status = await dbRemovePlant( plantId);
-    ctx.status = status;
+  // Remove plant from DB
+  const { status, body } = await dbDeletePlant(id);
+  ctx.body = body;
+  ctx.status = status;
 }
 
-
-module.exports=router;
+module.exports = router;
