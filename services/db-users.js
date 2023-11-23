@@ -74,7 +74,28 @@ async function dbGetUserById(id) {
   }
 }
 
-async function dbRegisterAdmin(params) {
+async function dbGetUserByUsername(username) {
+  console.log(`Received request for user by username: ${username}`);
+
+  try {
+    const query = {
+      text: "SELECT * FROM users WHERE role=$1 AND username=$2;",
+      values: ["User", username],
+    };
+    const { rows } = await pool.query(query);
+
+    if (rows.length === 0) {
+      return 404;
+    }
+
+    return { status: 200, user: rows };
+  } catch (err) {
+    console.log(err);
+    return 500;
+  }
+}
+
+async function dbAddAdmin(params) {
   console.log(`Received Add Admin Request: ${JSON.stringify(params)}`);
 
   try {
@@ -92,6 +113,8 @@ async function dbRegisterAdmin(params) {
 
 async function dbAddUser(params) {
   console.log(`Received Add User Request: ${JSON.stringify(params)}`);
+
+  
 
   try {
     const query = {
@@ -193,7 +216,8 @@ module.exports = {
   dbListUsers,
   dbGetAdminById,
   dbGetUserById,
-  dbRegisterAdmin,
+  dbGetUserByUsername,
+  dbAddAdmin,
   dbAddUser,
   dbUpdateAdmin,
   dbUpdateUser,

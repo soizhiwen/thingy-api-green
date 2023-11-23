@@ -1,19 +1,20 @@
 const router = require('koa-router')();
 
-const { dbListAdmins, dbListUsers, dbGetAdminById, dbGetUserById, dbRegisterAdmin, dbAddUser,
+const { dbListAdmins, dbListUsers, dbGetAdminById, dbGetUserById, dbAddAdmin, dbAddUser,
         dbUpdateAdmin, dbUpdateUser, dbRemoveAdmin, dbRemoveUser}
     = require("../services/db-users");
+const { createToken, verifyToken } = require('../services/auth-JWT');
 
-router.get('/users/admins/', listAdmins)
-    .get('/users/', listUsers)
-    .get('/users/admins/:id', getAdminById)
-    .get('/users/:id', getUserById)
-    .post('/users/admins/',registerAdmin)
-    .post('/users/', addUser)
-    .patch('/users/:id', updateUser)
-    .patch('/users/admins/:id', updateAdmin)
-    .del('/users/:id', removeUser)
-    .del('/users/admin/:id', removeAdmin);
+router.get('/users/admins/', verifyToken, listAdmins)
+    .get('/users/', verifyToken ,listUsers)
+    .get('/users/admins/:id', verifyToken, getAdminById)
+    .get('/users/:id', verifyToken, getUserById)
+    //.post('/users/admins/',verifyToken, registerAdmin)
+    .post('/users/', verifyToken, addUser)
+    .patch('/users/:id', verifyToken, updateUser)
+    .patch('/users/admins/:id', verifyToken, updateAdmin)
+    .del('/users/:id', verifyToken, removeUser)
+    .del('/users/admin/:id', verifyToken, removeAdmin);
 
 
 async function listAdmins(ctx) {
@@ -58,12 +59,12 @@ async function getUserById(ctx) {
 }
 
 
-async function registerAdmin(ctx) {
+async function addAdmin(ctx) {
     console.log("POST request to register admin!");
     const adminParams = ctx.request.body;
 
     // Call DB Function
-    const {status, adminId} = await dbRegisterAdmin(adminParams);
+    const {status, adminId} = await dbAddAdmin(adminParams);
 
     ctx.body = adminId;
     ctx.status = status;
