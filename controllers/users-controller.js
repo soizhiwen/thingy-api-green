@@ -7,13 +7,14 @@ const {
   dbUpdateUser,
   dbDeleteUser,
 } = require("../services/db-users");
+const { verifyToken, verifyAdminToken } = require("../services/auth-JWT");
 
 router
-  .get("/users/", listUsers)
-  .get("/users/:id", getUserById)
-  .post("/users/", createUser)
-  .patch("/users/:id", updateUser)
-  .del("/users/:id", deleteUser);
+  .get("/users/", verifyToken, listUsers)
+  .get("/users/:id", verifyToken, getUserById)
+  .post("/users/", verifyAdminToken, createUser)
+  .patch("/users/:id",verifyAdminToken, updateUser)
+  .del("/users/:id", verifyAdminToken, deleteUser);
 
 async function listUsers(ctx) {
   console.log("GET request to list all users received!");
