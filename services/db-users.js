@@ -40,7 +40,7 @@ async function dbGetUserByEmail(email) {
   try {
     const query = {
       text: "SELECT * FROM users WHERE email=$1;",
-      values: [name],
+      values: [email],
     };
     const { rows } = await pool.query(query);
 
@@ -58,12 +58,10 @@ async function dbGetUserByEmail(email) {
 async function dbCreateUser(params) {
   console.log(`Received Add User Request: ${JSON.stringify(params)}`);
 
-  
-
   try {
     const query = {
-      text: "INSERT INTO users(name, email, role) VALUES ($1, $2, $3) RETURNING *;",
-      values: [params.name, params.email, params.role],
+      text: "INSERT INTO users(name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *;",
+      values: [params.name, params.email, params.password, params.role],
     };
     const { rows } = await pool.query(query);
     return { status: 201, body: rows };
@@ -78,8 +76,8 @@ async function dbUpdateUser(id, params) {
 
   try {
     const query = {
-      text: "UPDATE users SET name=$1, email=$2, role=$3 WHERE id=$4 RETURNING *;",
-      values: [params.name, params.email, params.role, id],
+      text: "UPDATE users SET name=$1, email=$2, password=$3, role=$4 WHERE id=$5 RETURNING *;",
+      values: [params.name, params.email, params.password, params.role, id],
     };
     const { rows } = await pool.query(query);
 
