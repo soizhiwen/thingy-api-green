@@ -32,13 +32,34 @@ async function dbGetUserById(id) {
   }
 }
 
+async function dbGetUserByEmail(email) {
+  console.log(`Received request for user by email: ${email}`);
+
+  try {
+    const query = {
+      text: "SELECT * FROM users WHERE email=$1;",
+      values: [email],
+    };
+    const { rows } = await pool.query(query);
+
+    if (rows.length === 0) {
+      return 404;
+    }
+
+    return { status: 200, body: rows };
+  } catch (err) {
+    console.log(err);
+    return 500;
+  }
+}
+
 async function dbCreateUser(params) {
   console.log(`Received Add User Request: ${JSON.stringify(params)}`);
 
   try {
     const query = {
-      text: "INSERT INTO users(name, email, role) VALUES ($1, $2, $3) RETURNING *;",
-      values: [params.name, params.email, params.role],
+      text: "INSERT INTO users(name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *;",
+      values: [params.name, params.email, params.password, params.role],
     };
     const { rows } = await pool.query(query);
     return { status: 201, body: rows[0] };
@@ -52,8 +73,8 @@ async function dbUpdateUser(id, params) {
 
   try {
     const query = {
-      text: "UPDATE users SET name=$1, email=$2, role=$3 WHERE id=$4 RETURNING *;",
-      values: [params.name, params.email, params.role, id],
+      text: "UPDATE users SET name=$1, email=$2, password=$3, role=$4 WHERE id=$5 RETURNING *;",
+      values: [params.name, params.email, params.password, params.role, id],
     };
     const { rows } = await pool.query(query);
 
@@ -90,6 +111,7 @@ async function dbDeleteUser(id) {
 module.exports = {
   dbListUsers,
   dbGetUserById,
+  dbGetUserByEmail,
   dbCreateUser,
   dbUpdateUser,
   dbDeleteUser,
