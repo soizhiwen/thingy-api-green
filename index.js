@@ -10,6 +10,7 @@ const initMQTT = require("./services/mqtt").initMQTT;
 //Adding the routes
 const plantsRouter = require("./controllers/plants-controller");
 const usersRouter = require("./controllers/users-controller");
+const notificationsRouter = require("./controllers/notifications-controller");
 const greenhouseRouter = require("./controllers/greenhouse-controller");
 
 initMQTT();
@@ -22,6 +23,8 @@ app
   .use(plantsRouter.allowedMethods())
   .use(usersRouter.routes())
   .use(usersRouter.allowedMethods())
+  .use(notificationsRouter.routes())
+  .use(notificationsRouter.allowedMethods())
   .use(greenhouseRouter.routes())
   .use(greenhouseRouter.allowedMethods());
 
