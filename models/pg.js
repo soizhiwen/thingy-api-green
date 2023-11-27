@@ -31,7 +31,7 @@ async function createUsersTable() {
       (
         id SERIAL PRIMARY KEY,
         name VARCHAR NOT NULL,
-        email VARCHAR NOT NULL,
+        email VARCHAR UNIQUE NOT NULL,
         password VARCHAR NOT NULL,
         role VARCHAR NOT NULL
       );
@@ -45,8 +45,33 @@ async function createUsersTable() {
   }
 }
 
-createPlantsTable();
-createUsersTable();
+async function createNotificationsTable() {
+  try {
+    const query = `
+      CREATE TABLE IF NOT EXISTS notifications
+      (
+        id SERIAL PRIMARY KEY,
+        message VARCHAR NOT NULL,
+        timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+        plant_id INTEGER REFERENCES plants
+      );
+      `;
+
+    await pool.query(query);
+    console.log("Notifications table created");
+  } catch (err) {
+    console.error(err);
+    console.error("Notifications table creation failed");
+  }
+}
+
+async function createTables() {
+  await createPlantsTable();
+  await createUsersTable();
+  await createNotificationsTable();
+}
+
+createTables();
 
 module.exports = {
   pool,

@@ -8,8 +8,7 @@ async function dbListUsers() {
     const { rows } = await pool.query(query);
     return { status: 200, body: rows };
   } catch (err) {
-    console.log(err);
-    return 500;
+    return { status: 500, body: err };
   }
 }
 
@@ -20,6 +19,26 @@ async function dbGetUserById(id) {
     const query = {
       text: "SELECT * FROM users WHERE id=$1;",
       values: [id],
+    };
+    const { rows } = await pool.query(query);
+
+    if (rows.length === 0) {
+      return { status: 404, body: "Not found" };
+    }
+
+    return { status: 200, body: rows };
+  } catch (err) {
+    return { status: 500, body: err };
+  }
+}
+
+async function dbGetUserByEmail(email) {
+  console.log(`Received request for user by email: ${email}`);
+
+  try {
+    const query = {
+      text: "SELECT * FROM users WHERE email=$1;",
+      values: [email],
     };
     const { rows } = await pool.query(query);
 
@@ -64,10 +83,9 @@ async function dbCreateUser(params) {
       values: [params.name, params.email, params.password, params.role],
     };
     const { rows } = await pool.query(query);
-    return { status: 201, body: rows };
+    return { status: 201, body: rows[0] };
   } catch (err) {
-    console.log(err);
-    return 501;
+    return { status: 501, body: err };
   }
 }
 
@@ -82,13 +100,12 @@ async function dbUpdateUser(id, params) {
     const { rows } = await pool.query(query);
 
     if (rows.length === 0) {
-      return 404;
+      return { status: 404, body: "Not found" };
     }
 
-    return { status: 200, body: rows };
+    return { status: 200, body: rows[0] };
   } catch (err) {
-    console.log(err);
-    return 500;
+    return { status: 500, body: err };
   }
 }
 
@@ -103,13 +120,12 @@ async function dbDeleteUser(id) {
     const { rows } = await pool.query(query);
 
     if (rows.length === 0) {
-      return 404;
+      return { status: 404, body: "Not found" };
     }
 
     return { status: 200, body: rows[0].id };
   } catch (err) {
-    console.log(err);
-    return 500;
+    return { status: 500, body: err };
   }
 }
 
