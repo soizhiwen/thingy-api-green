@@ -1,6 +1,6 @@
 const router = require('koa-router')();
 
-const { createToken, verifyToken } = require('../services/auth-JWT');
+const { createToken } = require('../services/auth-JWT');
 const { dbCreateUser, dbGetUserByEmail } = require("../services/db-users");
 
 router.post('/login', checkLogin)
@@ -20,9 +20,9 @@ async function registerAdmin(ctx) {
     console.log("BODYYYY" + JSON.stringify(body));
 
     if (status === 201) {
-        const token = await createToken(body[0].id, body[0].name, body[0].role);
+        const token = await createToken(body.id, body.name, body.role);
         ctx.set('authorization', token);
-        ctx.body = {id: body[0].id };
+        ctx.body = {id: body.id };
     }
     ctx.status = status;
 }

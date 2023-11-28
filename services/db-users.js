@@ -53,27 +53,6 @@ async function dbGetUserByEmail(email) {
   }
 }
 
-async function dbGetUserByEmail(email) {
-  console.log(`Received request for user by email: ${email}`);
-
-  try {
-    const query = {
-      text: "SELECT * FROM users WHERE email=$1;",
-      values: [email],
-    };
-    const { rows } = await pool.query(query);
-
-    if (rows.length === 0) {
-      return 404;
-    }
-
-    return { status: 200, body: rows };
-  } catch (err) {
-    console.log(err);
-    return 500;
-  }
-}
-
 async function dbCreateUser(params) {
   console.log(`Received Add User Request: ${JSON.stringify(params)}`);
 

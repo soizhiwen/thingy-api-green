@@ -9,13 +9,15 @@ const {
   dbDeleteNotification,
 } = require("../services/db-notifications");
 
+const { verifyToken } = require("../services/auth-JWT");
+
 router
-  .get("/notifications/", listNotifications)
-  .get("/notifications/:id", getNotificationById)
-  .get("/notifications/plants/:id", getNotificationByPlantId)
-  .post("/notifications/", createNotification)
-  .patch("/notifications/:id", updateNotification)
-  .del("/notifications/:id", deleteNotification);
+  .get("/notifications/", verifyToken, listNotifications)
+  .get("/notifications/:id", verifyToken, getNotificationById)
+  .get("/notifications/plants/:id", verifyToken, getNotificationByPlantId)
+  .post("/notifications/", verifyToken, createNotification)
+  .patch("/notifications/:id", verifyToken, updateNotification)
+  .del("/notifications/:id", verifyToken, deleteNotification);
 
 async function listNotifications(ctx) {
   const { status, body } = await dbListNotifications();

@@ -7,11 +7,13 @@ const {
   dbDeletePlant,
 } = require("../services/db-plants");
 
+const { verifyToken, verifyAdminToken } = require("../services/auth-JWT");
+
 router
-  .get("/plants/", listPlants)
-  .post("/plants/", createPlant)
-  .patch("/plants/:id", updatePlant)
-  .del("/plants/:id", deletePlant);
+  .get("/plants/", verifyToken, listPlants)
+  .post("/plants/", verifyAdminToken, createPlant)
+  .patch("/plants/:id", verifyAdminToken, updatePlant)
+  .del("/plants/:id", verifyAdminToken, deletePlant);
 
 async function listPlants(ctx) {
   console.log("GET request to list all plants received!");

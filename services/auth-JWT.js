@@ -2,10 +2,8 @@ const jwt = require("jsonwebtoken");
 
 // Secret key for JWT
 const jwtSecret = 'ASecret';
-//const jwtSecretAdmin = 'AdminSecret';
 
 async function createToken (userId, username, role) {
-    //const user = { id: userId, username: username };
     // Create a JWT
     const token = jwt.sign({ sub: userId, username: username, role: role }, jwtSecret, { expiresIn: '1h' });
 
@@ -27,7 +25,6 @@ async function verifyToken (ctx, next) {
     try {
         // Verify the JWT
         const decoded = jwt.verify(token, jwtSecret);
-        //ctx.state.role = decoded.role; // Attach user data to the context state
         ctx.status = 200;
         await next();
     } catch (err) {
@@ -49,7 +46,6 @@ async function verifyAdminToken(ctx, next) {
     try {
         // Verify the JWT
         const decoded = jwt.verify(token, jwtSecret);
-        //ctx.state.role = decoded.role; // Attach user data to the context state
 
         if (decoded.role === 'Admin') {
             ctx.status = 200;

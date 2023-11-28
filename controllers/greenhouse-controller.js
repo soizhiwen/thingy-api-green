@@ -1,8 +1,9 @@
 const router = require("koa-router")();
 const { dbListPlantsInGh, dbGetData } = require("../services/db-greenhouse");
+const { verifyToken } = require("../services/auth-JWT");
 
-router.get("/greenhouse/plants/:id", listPlants).get("/greenhouse/", getData);
-
+router.get("/greenhouse/plants/:id", verifyToken, listPlants)
+    .get("/greenhouse/", verifyToken, getData);
 
 
 async function listPlants(ctx) {
@@ -20,8 +21,6 @@ async function getData(ctx) {
   ctx.body = result;
   ctx.status = 200;
 }
-
-
 
 
 
