@@ -22,7 +22,7 @@ async function registerAdmin(ctx) {
     if (status === 201) {
         const token = await createToken(body.id, body.name, body.role);
         ctx.set('authorization', token);
-        ctx.body = {id: body.id };
+        ctx.body = { id: body.id };
     }
     ctx.status = status;
 }
@@ -32,12 +32,12 @@ async function checkLogin(ctx) {
     const email = ctx.request.body.email;
     const pw = ctx.request.body.password;
     const { status, body } = await dbGetUserByEmail(email);
-    if (status === 200 && pw === body[0].password) {
+    if (status === 200 && pw === body.password) {
         // User Authenticated; Create Authorization Token
-        const token = await createToken(body[0].id, body[0].name, body[0].role);
+        const token = await createToken(body.id, body.name, body.role);
 
         ctx.set('authorization', token);
-        ctx.body = { role: body[0].role, id: body[0].id };
+        ctx.body = { role: body.role, id: body.id };
     }
     ctx.status = status;
 }

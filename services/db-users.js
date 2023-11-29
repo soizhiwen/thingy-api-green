@@ -46,7 +46,7 @@ async function dbGetUserByEmail(email) {
       return 404;
     }
 
-    return { status: 200, body: rows };
+    return { status: 200, body: rows[0] };
   } catch (err) {
     console.log(err);
     return 500;
