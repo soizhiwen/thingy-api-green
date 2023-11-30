@@ -22,9 +22,9 @@ async function registerAdmin(ctx) {
 
     if (status === 201) {
         const token = await createToken(body.id, body.name, body.role);
-        ctx.set({"Access-Control-Expose-Headers": "authorization"})
+        ctx.set({"Access-Control-Expose-Headers": "authorization"});
         ctx.set('authorization', token);
-        ctx.body = token;
+        //ctx.body = token;
     }
     ctx.status = status;
 }
@@ -38,8 +38,9 @@ async function checkLogin(ctx) {
         // User Authenticated; Create Authorization Token
         const token = await createToken(body.id, body.name, body.role);
 
-        //ctx.set('authorization', token);
-        ctx.body = token;
+        ctx.set({"Access-Control-Expose-Headers": "authorization"});
+        //ctx.body = token;
+        ctx.set('authorization', token);
     }
     ctx.status = status;
 }
