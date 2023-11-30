@@ -14,43 +14,43 @@ async function checkValues(measurement, measurementType) {
 
     // get all plants
     const { status, body } = await dbListPlants();
-    //console.log("Measurement: " + measurement);
     let isInRange = true;
-    let plantId = -1;
-
+    let minMType = "min_" + measurementType;
+    let maxMType = "max_" + measurementType;
+    let retPlant;
     // for each plant: check if measurement is outside of min & max of plant's measurementType
     for (const plant of body) {
-        isInRange = measurement === plant[measurementType];
-        // if inside range, return true
-        // if outside range, return false
-        if (isInRange) {
+        isInRange = measurement >= plant[minMType] && measurement <= plant[maxMType];
+
+        if (isInRange) {    // if inside range, return true
             // continue
-        } else {
+        } else {            // if outside range, return false and the plant
             isInRange = false;
-            plantId = plant.id;
+            retPlant = plant;
             break;
         }
     }
 
-    return { isInRange, plantId };
+    return { isInRange, retPlant };
 }
 
 
 
 async function notificationHandler(measurement, measurementType) {
 
-    const { isInRange, plantId } = await checkValues(measurement, measurementType);
-    if (!isInRange && plantId !== -1) {
+    const { isInRange, retPlant } = await checkValues(measurement, measurementType);
+    if (!isInRange) {
 
         // Create notification (& add to db)
-        const message = "Message";
+        const message = "The " + retPlant.name + "'s value for " + measurementType +
+            " is outside the defined bounds at " + measurement +"!";
         const timestamp = new Date();
-        var userId = 1;
+        //var userId = 1;
 
-        const params = {message: message, timestamp: timestamp, plant_id: plantId, user_id: userId};
-        //const notification = await dbCreateNotification(params);
+        const params = {message: message, timestamp: timestamp, plant_id: retPlant.id};
+        const notification = await dbCreateNotification(params);
 
-        //console.log(notification);
+        console.log(notification);
 
         // TODO: Send notification to Client (via WebSocket)
 
