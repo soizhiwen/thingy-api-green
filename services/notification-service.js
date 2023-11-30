@@ -8,8 +8,24 @@ const { enableBuzzer, disableBuzzer, setLEDRed, setLEDBlue } = require("./mqtt")
  */
 
 
+async function checkValues(measurement, measurementType) {
 
 
+}
+
+
+
+async function notificationHandler(measurement, measurementType) {
+
+    //const isInRange = checkValue();
+
+
+
+
+}
+
+
+module.exports = { notificationHandler };
 
 
 

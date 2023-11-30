@@ -1,6 +1,7 @@
-const { dbAddData } = require("../services/db-mqtt");
+const { dbAddMQTTData } = require("../services/db-mqtt");
 
 const mqtt = require("mqtt");
+const {notificationHandler} = require("./notification-service");
 const options = {
   username: "green",
   password: "aCwHqUEp5J",
@@ -12,28 +13,31 @@ const client = mqtt.connect("mqtt://" + serverIP + ":" + port, options);
 const thingy_monitor = "green-1";
 const thingy_notification = "green-1";
 
-const topicSubscribe = "things/" + thingy_monitor + "/shadow/update";
+const topicSubscribeMonitor = "things/" + thingy_monitor + "/shadow/update";
+const topicSubscribeNotification = 'things/' + thingy_notification + '/shadow/update';
 const topicPublish = 'things/' + thingy_notification + '/shadow/update/accepted';
 
 
 // Handle connection events
 async function initMQTT() {
+  // Connecting to MQTT Server
   client.on("connect", () => {
     console.log(
       "Connection with the MQTT broker " + serverIP + " established!"
     );
   });
 
+  // Basic error handling
   client.on("error", (error) => {
     console.error("Something went wrong.");
     console.error(error);
   });
 
-  // Subscribe to a topic
+  // Subscribe to Thingy_Monitor topic
   client.on("connect", () => {
     // can also accept objects in the form {'topic': qos}
     client.subscribe(
-        topicSubscribe,
+        topicSubscribeMonitor,
         (err, granted) => {
         if (err) {
           console.log(err, "err");
@@ -43,10 +47,25 @@ async function initMQTT() {
     );
   });
 
+  // Subscribe to Thingy_Notification topic
+  client.on("connect", () => {
+    // can also accept objects in the form {'topic': qos}
+    client.subscribe(
+        topicSubscribeNotification,
+        (err, granted) => {
+          if (err) {
+            console.log(err, "err");
+          }
+          console.log(granted, "granted");
+        }
+    );
+  });
+
   // Handle incoming messages
   client.on("message", (topic, message) => {
     console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
-    dbAddData(message, thingy_monitor);
+    //dbAddMQTTData(message, thingy_monitor);
+    handleMqttData(message, topic);
   });
 
   // Disconnect when done
@@ -55,6 +74,34 @@ async function initMQTT() {
   });
 
 }
+
+
+const appIdsMeasurements = ["AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID"];
+
+async function handleMqttData(message, topic) {
+
+ // console.log("AddData With Topic: " + topic);
+
+  const messageJson = JSON.parse(message.toString());
+  const appIdValue = messageJson.appId;
+  const measurement = parseFloat(messageJson.data);
+
+  if (appIdsMeasurements.includes(appIdValue) && topic === topicSubscribeMonitor) {
+    await dbAddMQTTData(measurement, appIdValue, thingy_monitor);
+
+    await notificationHandler();
+  }
+
+  if (messageJson.appId === "BUTTON" && measurement === 1 && topic === topicSubscribeNotification) {
+    console.log("BUTTON PRESSED!")
+
+    // DISABLE BUZZER AND CHANGE LED BACK TO BLUE
+    //await disableBuzzer();
+    //await setLEDBlue();
+  }
+}
+
+
 
 async function publish(payload) {
   client.publish(topicPublish, payload, function (err) {
@@ -90,9 +137,9 @@ async function setLEDBlue() {
 
 module.exports = {
   enableBuzzer,
-  disableBuzzer,
+  //disableBuzzer,
   setLEDRed,
-  setLEDBlue,
+  //setLEDBlue,
   initMQTT };
 
 
