@@ -22,6 +22,7 @@ async function registerAdmin(ctx) {
 
     if (status === 201) {
         const token = await createToken(body.id, body.name, body.role);
+        ctx.set({"Access-Control-Expose-Headers": "authorization"})
         ctx.set('authorization', token);
         ctx.body = token;
     }
