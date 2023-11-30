@@ -13,9 +13,9 @@ async function createToken (userId, username, role) {
 
 // Middleware for verifying a JWT
 async function verifyToken (ctx, next) {
-
+    console.log("Verifying token");
     const token = ctx.headers.authorization;
-
+    console.log("Token: " + token);
     if (!token) {
         ctx.status = 401;
         ctx.body = { error: 'Unauthorized - Missing Token' };
@@ -35,8 +35,9 @@ async function verifyToken (ctx, next) {
 
 
 async function verifyAdminToken(ctx, next) {
+    console.log("Verifying Admin token");
     const token = ctx.headers.authorization;
-
+    console.log("Token: " + token);
     if (!token) {
         ctx.status = 401;
         ctx.body = { error: 'Unauthorized - Missing Token' };
