@@ -1,7 +1,7 @@
 const { dbAddMQTTData } = require("../services/db-mqtt");
 
 const mqtt = require("mqtt");
-const {notificationHandler} = require("./notification-service");
+const { notificationHandler } = require("./notification-service");
 const options = {
   username: "green",
   password: "aCwHqUEp5J",
@@ -77,27 +77,31 @@ async function initMQTT() {
 
 
 const appIdsMeasurements = ["AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID"];
+//const appIdsDB = ["temperature", "humidity", "co2", "air_quality"];
+
+const lt = {
+  "AIR_QUAL": "air_quality",
+  "CO2_EQUIV": "co2",
+  "TEMP": "temperature",
+  "HUMID": "humidity"
+};
 
 async function handleMqttData(message, topic) {
-
- // console.log("AddData With Topic: " + topic);
-
   const messageJson = JSON.parse(message.toString());
   const appIdValue = messageJson.appId;
   const measurement = parseFloat(messageJson.data);
 
   if (appIdsMeasurements.includes(appIdValue) && topic === topicSubscribeMonitor) {
     await dbAddMQTTData(measurement, appIdValue, thingy_monitor);
-
-    await notificationHandler();
+    await notificationHandler(measurement, lt[appIdValue]);
   }
 
   if (messageJson.appId === "BUTTON" && measurement === 1 && topic === topicSubscribeNotification) {
     console.log("BUTTON PRESSED!")
 
     // DISABLE BUZZER AND CHANGE LED BACK TO BLUE
-    //await disableBuzzer();
-    //await setLEDBlue();
+    await disableBuzzer();
+    await setLEDBlue();
   }
 }
 
@@ -137,9 +141,10 @@ async function setLEDBlue() {
 
 module.exports = {
   enableBuzzer,
-  //disableBuzzer,
+  disableBuzzer,
   setLEDRed,
-  //setLEDBlue,
-  initMQTT };
+  setLEDBlue,
+  initMQTT
+};
 
 

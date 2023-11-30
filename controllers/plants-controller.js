@@ -25,7 +25,7 @@ async function listPlants(ctx) {
 }
 
 async function createPlant(ctx) {
-  console.log("POST request to add a plants received!");
+  console.log("POST request to add a plant received!");
   const params = ctx.request.body;
 
   // Call DB Function
