@@ -23,7 +23,7 @@ async function registerAdmin(ctx) {
     if (status === 201) {
         const token = await createToken(body.id, body.name, body.role);
         ctx.set('authorization', token);
-        ctx.body = { id: body.id, authorization: token };
+        ctx.body = { authorization: token };
     }
     ctx.status = status;
 }
@@ -38,7 +38,7 @@ async function checkLogin(ctx) {
         const token = await createToken(body.id, body.name, body.role);
 
         //ctx.set('authorization', token);
-        ctx.body = { role: body.role, id: body.id, authorization: token };
+        ctx.body = { authorization: token };
     }
     ctx.status = status;
 }
