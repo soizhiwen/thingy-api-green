@@ -53,8 +53,7 @@ async function createNotificationsTable() {
         id SERIAL PRIMARY KEY,
         message VARCHAR NOT NULL,
         timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
-        plant_id INTEGER REFERENCES plants NOT NULL,
-        user_id INTEGER REFERENCES users NOT NULL
+        plant_id INTEGER REFERENCES plants NOT NULL
       );
       `;
 
@@ -63,6 +62,25 @@ async function createNotificationsTable() {
   } catch (err) {
     console.error(err);
     console.error("Notifications table creation failed");
+  }
+}
+
+async function createNotificationSentTable() {
+  try {
+    const query = `
+      CREATE TABLE IF NOT EXISTS notification_sent
+      (
+        notification_id INTEGER REFERENCES notifications NOT NULL,
+        user_id INTEGER REFERENCES users NOT NULL,
+        PRIMARY KEY (notification_id, user_id)
+      );
+      `;
+
+    await pool.query(query);
+    console.log("Notification sent table created");
+  } catch (err) {
+    console.error(err);
+    console.error("Notification sent table creation failed");
   }
 }
 
@@ -89,6 +107,7 @@ async function createTables() {
   await createPlantsTable();
   await createUsersTable();
   await createNotificationsTable();
+  await createNotificationSentTable();
   await createNotificationViewsTable();
 }
 
