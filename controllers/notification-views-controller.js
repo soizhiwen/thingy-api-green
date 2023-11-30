@@ -8,8 +8,8 @@ const {
 const { verifyToken } = require("../services/auth-JWT");
 
 router
-  .get("/notification-views/:id", getNotificationViewsById)
-  .post("/notification-views/", createNotificationViews);
+  .get("/notification-views/:id", verifyToken, getNotificationViewsById)
+  .post("/notification-views/", verifyToken, createNotificationViews);
 
 async function getNotificationViewsById(ctx) {
   const id = ctx.params.id;
