@@ -12,17 +12,18 @@ async function registerAdmin(ctx) {
     console.log("POST request to register admin!");
     const adminParams = ctx.request.body;
 
+    console.log(adminParams);
     //adminParams.role = "Admin";
 
     // Call DB Function
     // IMPORTANT: NEED TO CHECK FOR DOUBLE USERS
     const { status, body } = await dbCreateUser(adminParams);
-    console.log("BODYYYY" + JSON.stringify(body));
+    console.log("BODYYYY" + body.id);
 
     if (status === 201) {
         const token = await createToken(body.id, body.name, body.role);
         ctx.set('authorization', token);
-        ctx.body = { id: body.id };
+        ctx.body = { id: body.id, authorization: token };
     }
     ctx.status = status;
 }
@@ -36,8 +37,8 @@ async function checkLogin(ctx) {
         // User Authenticated; Create Authorization Token
         const token = await createToken(body.id, body.name, body.role);
 
-        ctx.set('authorization', token);
-        ctx.body = { role: body.role, id: body.id };
+        //ctx.set('authorization', token);
+        ctx.body = { role: body.role, id: body.id, authorization: token };
     }
     ctx.status = status;
 }
