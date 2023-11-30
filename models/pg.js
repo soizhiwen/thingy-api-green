@@ -9,10 +9,14 @@ async function createPlantsTable() {
         id SERIAL PRIMARY KEY, 
         name VARCHAR NOT NULL,
         harvest_date TIMESTAMP WITH TIME ZONE NOT NULL,
-        temperature NUMERIC NOT NULL,
-        humidity NUMERIC NOT NULL,
-        co2 NUMERIC NOT NULL,
-        air_quality NUMERIC NOT NULL
+        min_temperature NUMERIC NOT NULL,
+        max_temperature NUMERIC NOT NULL,
+        min_humidity NUMERIC NOT NULL,
+        max_humidity NUMERIC NOT NULL,
+        min_co2 NUMERIC NOT NULL,
+        max_co2 NUMERIC NOT NULL,
+        min_air_quality NUMERIC NOT NULL,
+        max_air_quality NUMERIC NOT NULL
       );
       `;
 
