@@ -4,7 +4,6 @@ const {
   dbListNotifications,
   dbGetNotificationById,
   dbGetNotificationByPlantId,
-  //dbGetNotificationByUserId,
   dbCreateNotification,
   dbUpdateNotification,
   dbDeleteNotification,
@@ -16,7 +15,6 @@ router
   .get("/notifications/", verifyToken, listNotifications)
   .get("/notifications/:id", verifyToken, getNotificationById)
   .get("/notifications/plants/:id", verifyToken, getNotificationByPlantId)
-  //.get("/notifications/users/:id", verifyToken, getNotificationByUserId)
   .post("/notifications/", verifyToken, createNotification)
   .patch("/notifications/:id", verifyToken, updateNotification)
   .del("/notifications/:id", verifyToken, deleteNotification);
@@ -40,16 +38,6 @@ async function getNotificationByPlantId(ctx) {
   ctx.body = body;
   ctx.status = status;
 }
-
-/*
-async function getNotificationByUserId(ctx) {
-  const id = ctx.params.id;
-  const { status, body } = await dbGetNotificationByUserId(id);
-  ctx.body = body;
-  ctx.status = status;
-}
-
- */
 
 async function createNotification(ctx) {
   const params = ctx.request.body;

@@ -46,27 +46,6 @@ async function dbGetNotificationByPlantId(id) {
   }
 }
 
-/*
-async function dbGetNotificationByUserId(id) {
-  try {
-    const query = {
-      text: "SELECT * FROM notifications WHERE user_id=$1 ORDER BY timestamp DESC;",
-      values: [id],
-    };
-    const { rows } = await pool.query(query);
-
-    if (rows.length === 0) {
-      return { status: 404, body: "Not found" };
-    }
-
-    return { status: 200, body: rows };
-  } catch (err) {
-    return { status: 500, body: err };
-  }
-}
-
- */
-
 async function dbCreateNotification(params) {
   try {
     const query = {
@@ -120,7 +99,6 @@ module.exports = {
   dbListNotifications,
   dbGetNotificationById,
   dbGetNotificationByPlantId,
-  //dbGetNotificationByUserId,
   dbCreateNotification,
   dbUpdateNotification,
   dbDeleteNotification,
