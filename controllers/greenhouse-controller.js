@@ -1,27 +1,23 @@
 const router = require("koa-router")();
-const { dbListPlantsInGh, dbGetData } = require("../services/db-greenhouse");
+const { dbGetLastData, dbGetPastData } = require("../services/db-greenhouse");
 const { verifyToken } = require("../services/auth-JWT");
 
-router.get("/greenhouse/plants/:id", verifyToken, listPlants)
-    .get("/greenhouse/", verifyToken, getData);
+router
+  .get("/greenhouse/", verifyToken, getLastData)
+  .get("/greenhouse/:appId/:start", verifyToken, getPastData);
 
-
-async function listPlants(ctx) {
-
-  const result = await dbListPlantsInGh();
-
-  ctx.body = result;
-  ctx.status = 200;
+async function getLastData(ctx) {
+  const { status, body } = await dbGetLastData();
+  ctx.body = body;
+  ctx.status = status;
 }
 
-async function getData(ctx) {
-
-  const result = await dbGetData();
-
-  ctx.body = result;
-  ctx.status = 200;
+async function getPastData(ctx) {
+  const appId = ctx.params.appId;
+  const start = ctx.params.start;
+  const { status, body } = await dbGetPastData(appId, start);
+  ctx.body = body;
+  ctx.status = status;
 }
-
-
 
 module.exports = router;
