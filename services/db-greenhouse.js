@@ -36,7 +36,10 @@ async function dbGetPastData(appId, start) {
     fluxQuery
   )) {
     const o = tableMeta.toObject(values);
-    results.push(o);
+    results.push({
+      value: o._value,
+      timestamp: o._time,
+    });
   }
 
   return { status: 200, body: results };
