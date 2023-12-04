@@ -9,11 +9,11 @@ const serverIP = "163.172.151.151";
 const port = "1886";
 const client = mqtt.connect("mqtt://" + serverIP + ":" + port, options);
 
-const thingy_monitor = "green-1";
-const thingy_notification = "green-1";
+const thingyMonitor = process.env.THINGY_MONITOR;
+const thingyNotification = process.env.THINGY_NOTIFICATION;
 
-const topicSubscribe = "things/" + thingy_monitor + "/shadow/update";
-const topicPublish = 'things/' + thingy_notification + '/shadow/update/accepted';
+const topicSubscribe = "things/" + thingyMonitor + "/shadow/update";
+const topicPublish = 'things/' + thingyNotification + '/shadow/update/accepted';
 
 
 // Handle connection events
@@ -45,8 +45,8 @@ async function initMQTT() {
 
   // Handle incoming messages
   client.on("message", (topic, message) => {
-    console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
-    dbAddData(message, thingy_monitor);
+    // console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
+    dbAddData(message, thingyMonitor);
   });
 
   // Disconnect when done
