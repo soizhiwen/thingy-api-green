@@ -10,8 +10,8 @@ const serverIP = "163.172.151.151";
 const port = "1886";
 const client = mqtt.connect("mqtt://" + serverIP + ":" + port, options);
 
-const thingyMonitor = process.env.THINGY_MONITOR;
-const thingyNotification = process.env.THINGY_NOTIFICATION;
+const thingy_monitor = process.env.THINGY_MONITOR;
+const thingy_notification = process.env.THINGY_NOTIFICATION;
 
 const topicSubscribeMonitor = "things/" + thingy_monitor + "/shadow/update";
 const topicSubscribeNotification = 'things/' + thingy_notification + '/shadow/update';
