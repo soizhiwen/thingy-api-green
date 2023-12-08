@@ -40,9 +40,12 @@ async function checkLogin(ctx) {
 
         ctx.set({ "Access-Control-Expose-Headers": "authorization" });
         ctx.set('authorization', token);
+        ctx.body = body;
+        ctx.status = status;
+    } else {
+        ctx.status = 404;
+        ctx.body = "User not found.";
     }
-    ctx.status = status;
-    ctx.body = body;
 }
 
 module.exports = router;

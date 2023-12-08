@@ -43,7 +43,7 @@ async function dbGetUserByEmail(email) {
     const { rows } = await pool.query(query);
 
     if (rows.length === 0) {
-      return { status: 404, body: { error: "User not found" } };
+      return { status: 404, body: "User not found" };
     }
 
     return { status: 200, body: rows[0] };
@@ -63,7 +63,7 @@ async function dbCreateUser(params) {
     const { rows } = await pool.query(query);
     return { status: 201, body: rows[0] };
   } catch (err) {
-    return { status: 501, body: err };
+    return { status: 409, body: err };
   }
 }
 
