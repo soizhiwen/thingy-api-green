@@ -25,8 +25,8 @@ async function dbGetNotificationViewsByUserId(id) {
 async function dbUpdateNotificationViews(id) {
   try {
     const query = {
-      text: "UPDATE notification_views SET viewed=$1 WHERE user_id=$2 RETURNING *;",
-      values: [true, id],
+      text: "UPDATE notification_views SET viewed=$1 WHERE user_id=$2 AND viewed=$3 RETURNING *;",
+      values: [true, id, false],
     };
     const { rows } = await pool.query(query);
 
