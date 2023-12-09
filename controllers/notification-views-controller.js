@@ -9,7 +9,7 @@ const { verifyToken, getUserId } = require("../services/auth-JWT");
 
 router
   .get("/notification-views/", verifyToken, getNotificationViewsByUserId)
-  .patch("/notification-views/:id", verifyToken, updateNotificationViews);
+  .patch("/notification-views/", verifyToken, updateNotificationViews);
 
 async function getNotificationViewsByUserId(ctx) {
   const id = await getUserId(ctx);
@@ -19,7 +19,7 @@ async function getNotificationViewsByUserId(ctx) {
 }
 
 async function updateNotificationViews(ctx) {
-  const id = ctx.params.id;
+  const id = await getUserId(ctx);
   const { status, body } = await dbUpdateNotificationViews(id);
   ctx.body = body;
   ctx.status = status;
