@@ -1,3 +1,9 @@
+/**
+ * This file handles the connection to InfluxDB.
+ */
+
+
+
 require("dotenv").config();
 const { InfluxDB } = require("@influxdata/influxdb-client");
 

@@ -1,4 +1,3 @@
-
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const cors = require("@koa/cors");
@@ -11,11 +10,11 @@ const initMQTT = require("./services/mqtt").initMQTT;
 const plantsRouter = require("./controllers/plants-controller");
 const usersRouter = require("./controllers/users-controller");
 const notificationsRouter = require("./controllers/notifications-controller");
+const notificationViewsRouter = require("./controllers/notification-views-controller");
 const greenhouseRouter = require("./controllers/greenhouse-controller");
 const authRouter = require("./controllers/auth-controller");
 
 initMQTT();
-
 
 app
   .use(bodyParser())
@@ -26,16 +25,13 @@ app
   .use(usersRouter.allowedMethods())
   .use(notificationsRouter.routes())
   .use(notificationsRouter.allowedMethods())
+  .use(notificationViewsRouter.routes())
+  .use(notificationViewsRouter.allowedMethods())
   .use(greenhouseRouter.routes())
   .use(greenhouseRouter.allowedMethods())
-    .use(authRouter.routes())
-    .use(authRouter.allowedMethods());
-
+  .use(authRouter.routes())
+  .use(authRouter.allowedMethods());
 
 app.listen(8080, () => {
   console.log(`Application running on port 8080`);
 });
-
-
-
-

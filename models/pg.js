@@ -1,6 +1,16 @@
+/**
+ * This file handles the connection to and initialization of the PostgreSQL and the required tables.
+ */
+
+
+
+// Creating a PostgreSQL-Client
 const { Pool } = require("pg");
 const pool = new Pool();
 
+/**
+ * Create the Plants Table, if not yet present.
+ */
 async function createPlantsTable() {
   try {
     const query = `
@@ -9,10 +19,14 @@ async function createPlantsTable() {
         id SERIAL PRIMARY KEY, 
         name VARCHAR NOT NULL,
         harvest_date TIMESTAMP WITH TIME ZONE NOT NULL,
-        temperature NUMERIC NOT NULL,
-        humidity NUMERIC NOT NULL,
-        co2 NUMERIC NOT NULL,
-        air_quality NUMERIC NOT NULL
+        min_temperature NUMERIC NOT NULL,
+        max_temperature NUMERIC NOT NULL,
+        min_humidity NUMERIC NOT NULL,
+        max_humidity NUMERIC NOT NULL,
+        min_co2 NUMERIC NOT NULL,
+        max_co2 NUMERIC NOT NULL,
+        min_air_quality NUMERIC NOT NULL,
+        max_air_quality NUMERIC NOT NULL
       );
       `;
 
@@ -24,6 +38,9 @@ async function createPlantsTable() {
   }
 }
 
+/**
+ * Create the Users Table, if not yet present.
+ */
 async function createUsersTable() {
   try {
     const query = `
@@ -45,6 +62,9 @@ async function createUsersTable() {
   }
 }
 
+/**
+ * Create the Notification Table, if not yet present.
+ */
 async function createNotificationsTable() {
   try {
     const query = `
@@ -53,7 +73,7 @@ async function createNotificationsTable() {
         id SERIAL PRIMARY KEY,
         message VARCHAR NOT NULL,
         timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
-        plant_id INTEGER REFERENCES plants
+        plant_id INTEGER REFERENCES plants NOT NULL
       );
       `;
 
@@ -65,10 +85,35 @@ async function createNotificationsTable() {
   }
 }
 
+async function createNotificationViewsTable() {
+  try {
+    const query = `
+      CREATE TABLE IF NOT EXISTS notification_views
+      (
+        notification_id INTEGER REFERENCES notifications NOT NULL,
+        user_id INTEGER REFERENCES users NOT NULL,
+        viewed BOOLEAN NOT NULL DEFAULT FALSE,
+        PRIMARY KEY (notification_id, user_id)
+      );
+      `;
+
+    await pool.query(query);
+    console.log("Notification views table created");
+  } catch (err) {
+    console.error(err);
+    console.error("Notification views table creation failed");
+  }
+}
+
+/**
+ * 'One function to call then all!'
+ * Calls all the table creation functions.
+ */
 async function createTables() {
   await createPlantsTable();
   await createUsersTable();
   await createNotificationsTable();
+  await createNotificationViewsTable();
 }
 
 createTables();

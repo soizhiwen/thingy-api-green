@@ -1,5 +1,16 @@
+/**
+ * This files interfaces with the database regarding plants.
+ */
+
+
+
 const { pool } = require("../models/pg");
 
+/**
+ * Returns all plants in the database.
+ *
+ * @returns {Promise<{body, status: number}|{body: *, status: number}>}
+ */
 async function dbListPlants() {
   console.log("Received List Plants request.");
 
@@ -12,19 +23,29 @@ async function dbListPlants() {
   }
 }
 
+/**
+ * Creates and returns a new plant with the corresponding parameters.
+ *
+ * @param params - All required: 'name', 'harvest_date', 'min_temperature', 'max_temperature', 'min_humidity', 'max_humidity', min_co2', 'max_co2', 'min_air_quality', 'max_air_quality'
+ * @returns {Promise<{body, status: number}|{body: *, status: number}>}
+ */
 async function dbCreatePlant(params) {
   console.log(`Received Add Plant request: ${JSON.stringify(params)}`);
 
   try {
     const query = {
-      text: "INSERT INTO plants(name, harvest_date, temperature, humidity, co2, air_quality) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
+      text: "INSERT INTO plants(name, harvest_date, min_temperature, max_temperature, min_humidity, max_humidity, min_co2, max_co2, min_air_quality, max_air_quality) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;",
       values: [
         params.name,
         params.harvest_date,
-        params.temperature,
-        params.humidity,
-        params.co2,
-        params.air_quality,
+        params.min_temperature,
+        params.max_temperature,
+        params.min_humidity,
+        params.max_humidity,
+        params.min_co2,
+        params.max_co2,
+        params.min_air_quality,
+        params.max_air_quality,
       ],
     };
     const { rows } = await pool.query(query);
@@ -34,19 +55,30 @@ async function dbCreatePlant(params) {
   }
 }
 
+/**
+ * Updates and returns a plant specified by 'id' with the parameters.
+ *
+ * @param id - plant id
+ * @param params - 'name', 'harvest_date', 'min_temperature', 'max_temperature', 'min_humidity', 'max_humidity', min_co2', 'max_co2', 'min_air_quality', 'max_air_quality'
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbUpdatePlant(id, params) {
   console.log(`Received Update Plant request: ${JSON.stringify(params)}`);
 
   try {
     const query = {
-      text: "UPDATE plants SET name=$1, harvest_date=$2, temperature=$3, humidity=$4, co2=$5, air_quality=$6 WHERE id=$7 RETURNING *;",
+      text: "UPDATE plants SET name=$1, harvest_date=$2, min_temperature=$3, max_temperature=$4, min_humidity=$5, max_humidity=$6, min_co2=$7, max_co2=$8, min_air_quality=$9, max_air_quality=$10 WHERE id=$11 RETURNING *;",
       values: [
         params.name,
         params.harvest_date,
-        params.temperature,
-        params.humidity,
-        params.co2,
-        params.air_quality,
+        params.min_temperature,
+        params.max_temperature,
+        params.min_humidity,
+        params.max_humidity,
+        params.min_co2,
+        params.max_co2,
+        params.min_air_quality,
+        params.max_air_quality,
         id,
       ],
     };
@@ -62,6 +94,12 @@ async function dbUpdatePlant(id, params) {
   }
 }
 
+/**
+ * Deletes the plant specified by 'id' and returns the deletes plant's 'id'.
+ *
+ * @param id - plant id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}>}
+ */
 async function dbDeletePlant(id) {
   console.log(`Received Delete Plant request: ${id}`);
 
