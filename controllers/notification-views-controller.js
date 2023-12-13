@@ -1,26 +1,26 @@
 const router = require("koa-router")();
 
 const {
-  dbGetNotificationViewsById,
-  dbCreateNotificationViews,
+  dbGetNotificationViewsByUserId,
+  dbUpdateNotificationViews,
 } = require("../services/db-notification-views");
 
-const { verifyToken } = require("../services/auth-JWT");
+const { verifyToken, getUserId } = require("../services/auth-JWT");
 
 router
-  .get("/notification-views/:id", verifyToken, getNotificationViewsById)
-  .post("/notification-views/", verifyToken, createNotificationViews);
+  .get("/notification-views/", verifyToken, getNotificationViewsByUserId)
+  .patch("/notification-views/", verifyToken, updateNotificationViews);
 
-async function getNotificationViewsById(ctx) {
-  const id = ctx.params.id;
-  const { status, body } = await dbGetNotificationViewsById(id);
+async function getNotificationViewsByUserId(ctx) {
+  const id = await getUserId(ctx);
+  const { status, body } = await dbGetNotificationViewsByUserId(id);
   ctx.body = body;
   ctx.status = status;
 }
 
-async function createNotificationViews(ctx) {
-  const params = ctx.request.body;
-  const { status, body } = await dbCreateNotificationViews(params);
+async function updateNotificationViews(ctx) {
+  const id = await getUserId(ctx);
+  const { status, body } = await dbUpdateNotificationViews(id);
   ctx.body = body;
   ctx.status = status;
 }

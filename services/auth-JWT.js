@@ -86,5 +86,18 @@ async function verifyAdminToken(ctx, next) {
     }
 }
 
+async function getUserId(ctx) {
+    const token = ctx.headers.authorization;
+    if (!token) {
+        return;
+    }
+    try {
+        const decoded = jwt.verify(token, jwtSecret);
+        return decoded.sub;
+    } catch (err) {
+       return "Get User id failed"
+    }
+}
 
-module.exports = { createToken, verifyToken, verifyAdminToken };
+
+module.exports = { createToken, verifyToken, verifyAdminToken, getUserId };

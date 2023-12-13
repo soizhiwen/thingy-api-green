@@ -1,3 +1,4 @@
+const format = require("pg-format");
 const { pool } = require("../models/pg");
 
 async function dbListNotifications() {
@@ -47,22 +48,43 @@ async function dbGetNotificationByPlantId(id) {
 }
 
 async function dbCreateNotification(params) {
+  const client = await pool.connect();
+
   try {
-    const query = {
+    await client.query("BEGIN");
+    const queryNotifications = {
       text: "INSERT INTO notifications(message, timestamp, plant_id) VALUES ($1, $2, $3) RETURNING *;",
       values: [params.message, params.timestamp, params.plant_id],
     };
-    const { rows } = await pool.query(query);
-    return { status: 201, body: rows[0] };
+    const resNotifications = await client.query(queryNotifications);
+
+    const queryUsersId = "SELECT id FROM users;";
+    const resUsers = await client.query(queryUsersId);
+
+    const values = [];
+    for (let row of resUsers.rows) {
+      values.push([resNotifications.rows[0].id, row.id]);
+    }
+
+    const queryNotificationViews = format(
+      "INSERT INTO notification_views(notification_id, user_id) VALUES %L",
+      values
+    );
+    await client.query(queryNotificationViews);
+    await client.query("COMMIT");
+    return { status: 201, body: resNotifications.rows[0] };
   } catch (err) {
+    await client.query("ROLLBACK");
     return { status: 501, body: err };
+  } finally {
+    client.release();
   }
 }
 
 async function dbUpdateNotification(id, params) {
   try {
     const query = {
-      text: "UPDATE notifications SET message=$1, timestamp=$2, plant_id=$3 WHERE id=$5 RETURNING *;",
+      text: "UPDATE notifications SET message=$1, timestamp=$2, plant_id=$3 WHERE id=$4 RETURNING *;",
       values: [params.message, params.timestamp, params.plant_id, id],
     };
     const { rows } = await pool.query(query);

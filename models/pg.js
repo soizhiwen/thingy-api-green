@@ -85,31 +85,6 @@ async function createNotificationsTable() {
   }
 }
 
-/**
- * Create the Sent-Notifications Table, if not yet present.
- */
-async function createNotificationSentTable() {
-  try {
-    const query = `
-      CREATE TABLE IF NOT EXISTS notification_sent
-      (
-        notification_id INTEGER REFERENCES notifications NOT NULL,
-        user_id INTEGER REFERENCES users NOT NULL,
-        PRIMARY KEY (notification_id, user_id)
-      );
-      `;
-
-    await pool.query(query);
-    console.log("Notification sent table created");
-  } catch (err) {
-    console.error(err);
-    console.error("Notification sent table creation failed");
-  }
-}
-
-/**
- * Create the Viewed-Notification Table, if not yet present.
- */
 async function createNotificationViewsTable() {
   try {
     const query = `
@@ -117,6 +92,7 @@ async function createNotificationViewsTable() {
       (
         notification_id INTEGER REFERENCES notifications NOT NULL,
         user_id INTEGER REFERENCES users NOT NULL,
+        viewed BOOLEAN NOT NULL DEFAULT FALSE,
         PRIMARY KEY (notification_id, user_id)
       );
       `;
@@ -137,7 +113,6 @@ async function createTables() {
   await createPlantsTable();
   await createUsersTable();
   await createNotificationsTable();
-  await createNotificationSentTable();
   await createNotificationViewsTable();
 }
 
