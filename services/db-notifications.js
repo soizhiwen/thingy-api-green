@@ -1,6 +1,17 @@
+/**
+ * This files interfaces with the database regarding notifications.
+ */
+
+
+
 const format = require("pg-format");
 const { pool } = require("../models/pg");
 
+/**
+ * Retrieves all notifications from the database.
+ *
+ * @returns {Promise<{body, status: number}|{body: *, status: number}>}
+ */
 async function dbListNotifications() {
   try {
     const query = "SELECT * FROM notifications ORDER BY id DESC;";
@@ -11,6 +22,12 @@ async function dbListNotifications() {
   }
 }
 
+/**
+ * Retrieves a specific notification defined by its 'id'.
+ *
+ * @param id - notification id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbGetNotificationById(id) {
   try {
     const query = {
@@ -29,6 +46,12 @@ async function dbGetNotificationById(id) {
   }
 }
 
+/**
+ * Retrieves all notifications for the plant 'id'.
+ *
+ * @param id - plant id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbGetNotificationByPlantId(id) {
   try {
     const query = {
@@ -47,6 +70,13 @@ async function dbGetNotificationByPlantId(id) {
   }
 }
 
+/**
+ * Creates and returns a new notification requiring 'message', a 'timestamp', and a 'plant_id'.
+ * Related tables are also altered accordingly.
+ *
+ * @param params
+ * @returns {Promise<{body, status: number}|{body: *, status: number}>}
+ */
 async function dbCreateNotification(params) {
   const client = await pool.connect();
 
@@ -81,6 +111,13 @@ async function dbCreateNotification(params) {
   }
 }
 
+/**
+ * Updates a notification specified by its 'id' with the provided parameters.
+ *
+ * @param id - notification id
+ * @param params - params to update: 'message', a 'timestamp', 'plant_id'
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbUpdateNotification(id, params) {
   try {
     const query = {
@@ -99,6 +136,12 @@ async function dbUpdateNotification(id, params) {
   }
 }
 
+/**
+ * Deletes the notification defined by 'id' and returns the id.
+ *
+ * @param id - notification id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}>}
+ */
 async function dbDeleteNotification(id) {
   try {
     const query = {

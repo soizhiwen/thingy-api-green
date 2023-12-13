@@ -1,5 +1,16 @@
+/**
+ * This files interfaces with the database regarding plants.
+ */
+
+
+
 const { pool } = require("../models/pg");
 
+/**
+ * Returns all plants in the database.
+ *
+ * @returns {Promise<{body, status: number}|{body: *, status: number}>}
+ */
 async function dbListPlants() {
   console.log("Received List Plants request.");
 
@@ -12,6 +23,12 @@ async function dbListPlants() {
   }
 }
 
+/**
+ * Creates and returns a new plant with the corresponding parameters.
+ *
+ * @param params - All required: 'name', 'harvest_date', 'min_temperature', 'max_temperature', 'min_humidity', 'max_humidity', min_co2', 'max_co2', 'min_air_quality', 'max_air_quality'
+ * @returns {Promise<{body, status: number}|{body: *, status: number}>}
+ */
 async function dbCreatePlant(params) {
   console.log(`Received Add Plant request: ${JSON.stringify(params)}`);
 
@@ -38,6 +55,13 @@ async function dbCreatePlant(params) {
   }
 }
 
+/**
+ * Updates and returns a plant specified by 'id' with the parameters.
+ *
+ * @param id - plant id
+ * @param params - 'name', 'harvest_date', 'min_temperature', 'max_temperature', 'min_humidity', 'max_humidity', min_co2', 'max_co2', 'min_air_quality', 'max_air_quality'
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbUpdatePlant(id, params) {
   console.log(`Received Update Plant request: ${JSON.stringify(params)}`);
 
@@ -70,6 +94,12 @@ async function dbUpdatePlant(id, params) {
   }
 }
 
+/**
+ * Deletes the plant specified by 'id' and returns the deletes plant's 'id'.
+ *
+ * @param id - plant id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}>}
+ */
 async function dbDeletePlant(id) {
   console.log(`Received Delete Plant request: ${id}`);
 

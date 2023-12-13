@@ -3,6 +3,13 @@ const { Point } = require("@influxdata/influxdb-client");
 
 //const thingyMonitor = process.env.THINGY_MONITOR;
 
+/**
+ * Adds the MQTT data to InfluxDB.
+ *
+ * @param measurement - the measured value
+ * @param appIdValue - the value type
+ * @param thingy_monitor - the source thingy
+ */
 async function dbAddMQTTData(measurement, appIdValue, thingy_monitor) {
 
     writeClient.useDefaultTags({ thingy_id: thingy_monitor });

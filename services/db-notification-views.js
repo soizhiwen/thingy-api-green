@@ -1,5 +1,17 @@
+/**
+ * This files interfaces with the database regarding viewed notifications.
+ */
+
+
+
 const { pool } = require("../models/pg");
 
+/**
+ * Takes a user id and returns the viewed notifications for that user from the database.
+ *
+ * @param id - user id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbGetNotificationViewsByUserId(id) {
   try {
     const query = {
@@ -22,6 +34,12 @@ async function dbGetNotificationViewsByUserId(id) {
   }
 }
 
+/**
+ * Takes a user id and returns the updated viewed notifications for that user from the database.
+ *
+ * @param id - user id
+ * @returns {Promise<{body, status: number}|{body: string, status: number}|{body: *, status: number}>}
+ */
 async function dbUpdateNotificationViews(id) {
   const client = await pool.connect();
 

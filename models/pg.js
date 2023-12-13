@@ -1,6 +1,16 @@
+/**
+ * This file handles the connection to and initialization of the PostgreSQL and the required tables.
+ */
+
+
+
+// Creating a PostgreSQL-Client
 const { Pool } = require("pg");
 const pool = new Pool();
 
+/**
+ * Create the Plants Table, if not yet present.
+ */
 async function createPlantsTable() {
   try {
     const query = `
@@ -28,6 +38,9 @@ async function createPlantsTable() {
   }
 }
 
+/**
+ * Create the Users Table, if not yet present.
+ */
 async function createUsersTable() {
   try {
     const query = `
@@ -49,6 +62,9 @@ async function createUsersTable() {
   }
 }
 
+/**
+ * Create the Notification Table, if not yet present.
+ */
 async function createNotificationsTable() {
   try {
     const query = `
@@ -89,6 +105,10 @@ async function createNotificationViewsTable() {
   }
 }
 
+/**
+ * 'One function to call then all!'
+ * Calls all the table creation functions.
+ */
 async function createTables() {
   await createPlantsTable();
   await createUsersTable();

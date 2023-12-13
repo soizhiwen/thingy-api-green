@@ -1,19 +1,21 @@
-//const { enableBuzzer, setLEDRed } = require("./mqtt");
-const { dbListPlants } = require("./db-plants");
-const { dbCreateNotification } = require("./db-notifications");
-
 /**
- * WHAT WE NEED:
- *
- * - Logic: Depending on the thingy/sensor data, send notification to client and activate
- *      thingy/notification with respective behaviour (buzzer, LED)
+ * This file contains the logic for handling notifications to the client and thingy.
  */
 
 
-async function checkValues(measurement, measurementType) {
 
-    // get all plants
-    const { status, body } = await dbListPlants();
+const { dbListPlants } = require("./db-plants");
+const { dbCreateNotification } = require("./db-notifications");
+
+
+/**
+ * Checks whether the measured value is within the defined range of all plants.
+ *
+ * @param measurement - measured value
+ * @param measurementType - what kind of measurement
+ */
+async function checkValues(measurement, measurementType) {
+    const { status, body } = await dbListPlants();  // get all plants
     let isInRange = true;
     let minMType = "min_" + measurementType;
     let maxMType = "max_" + measurementType;
@@ -21,7 +23,6 @@ async function checkValues(measurement, measurementType) {
     // for each plant: check if measurement is outside of min & max of plant's measurementType
     for (const plant of body) {
         isInRange = measurement >= plant[minMType] && measurement <= plant[maxMType];
-
         if (isInRange) {    // if inside range, return true
             // continue
         } else {            // if outside range, return false and the plant
@@ -30,12 +31,16 @@ async function checkValues(measurement, measurementType) {
             break;
         }
     }
-
     return { isInRange, retPlant };
 }
 
 
-
+/**
+ * Main handler for notifications to client and thingy.
+ *
+ * @param measurement - measured value
+ * @param measurementType - what kind of measurement
+ */
 async function notificationHandler(measurement, measurementType) {
 
     const { isInRange, retPlant } = await checkValues(measurement, measurementType);
@@ -45,7 +50,6 @@ async function notificationHandler(measurement, measurementType) {
         const message = "The " + retPlant.name + "'s value for " + measurementType +
             " is outside the defined bounds at " + measurement +"!";
         const timestamp = new Date();
-        //var userId = 1;
 
         const params = {message: message, timestamp: timestamp, plant_id: retPlant.id};
         const notification = await dbCreateNotification(params);
@@ -65,21 +69,3 @@ async function notificationHandler(measurement, measurementType) {
 
 
 module.exports = { notificationHandler };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// THINGY
-
