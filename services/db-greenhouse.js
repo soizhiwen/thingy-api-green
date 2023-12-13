@@ -1,9 +1,19 @@
+/**
+ * This file interfaces with influxDB. It enables getting the last data point and a range of data points.
+ */
+
+
 require("dotenv").config();
 const { queryClient } = require("../models/influx");
 
 const bucket = process.env.INFLUX_BUCKET;
 const thingyMonitor = process.env.THINGY_MONITOR;
 
+/**
+ * Gets the last measured data point from InfluxDB. The return contains the data point and a status code.
+ *
+ * @returns {Promise<{body: {}, status: number}>}
+ */
 async function dbGetLastData() {
   const result = {};
   const fluxQuery = `from(bucket: "${bucket}")
@@ -20,10 +30,17 @@ async function dbGetLastData() {
     result[o.app_id] = o._value;
     result.timestamp = o._time;
   }
-
   return { status: 200, body: result };
 }
 
+/**
+ * Gets the data from a specified measurement type (appId) from a defined start.
+ * This start denotes the time frame going back from the current time.
+ *
+ * @param appId - measurement type
+ * @param start - how much time going back
+ * @returns {Promise<{body: *[], status: number}>}
+ */
 async function dbGetPastData(appId, start) {
   const fluxQuery = `from(bucket: "${bucket}")
     |> range(start: -${start})
@@ -41,7 +58,6 @@ async function dbGetPastData(appId, start) {
       timestamp: o._time,
     });
   }
-
   return { status: 200, body: results };
 }
 

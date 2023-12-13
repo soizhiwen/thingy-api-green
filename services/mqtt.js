@@ -1,3 +1,8 @@
+/**
+ * This file contains the main MQTT handling functions.
+ */
+
+
 const { dbAddMQTTData } = require("../services/db-mqtt");
 
 const mqtt = require("mqtt");
@@ -10,21 +15,23 @@ const serverIP = "163.172.151.151";
 const port = "1886";
 const client = mqtt.connect("mqtt://" + serverIP + ":" + port, options);
 
-const thingyMonitor = process.env.THINGY_MONITOR;
-const thingyNotification = process.env.THINGY_NOTIFICATION;
+const thingy_monitor = process.env.THINGY_MONITOR;
+const thingy_notification = process.env.THINGY_NOTIFICATION;
 
 const topicSubscribeMonitor = "things/" + thingy_monitor + "/shadow/update";
 const topicSubscribeNotification = 'things/' + thingy_notification + '/shadow/update';
 const topicPublish = 'things/' + thingy_notification + '/shadow/update/accepted';
 
 
-// Handle connection events
+/**
+ * Initializes the listeners for MQTT messages.
+ *
+ */
 async function initMQTT() {
+  // Handle connection events
   // Connecting to MQTT Server
   client.on("connect", () => {
-    console.log(
-      "Connection with the MQTT broker " + serverIP + " established!"
-    );
+    console.log("Connection with the MQTT broker " + serverIP + " established!");
   });
 
   // Basic error handling
@@ -64,7 +71,6 @@ async function initMQTT() {
   // Handle incoming messages
   client.on("message", (topic, message) => {
     console.log(`Incoming message on topic ${topic}: ${message.toString()}`);
-    //dbAddMQTTData(message, thingy_monitor);
     handleMqttData(message, topic);
   });
 
@@ -86,16 +92,24 @@ const lt = {
   "HUMID": "humidity"
 };
 
+/**
+ * Handles the incoming MQTT messages.
+ *
+ * @param message - the received message
+ * @param topic - MQTT-topic
+ */
 async function handleMqttData(message, topic) {
   const messageJson = JSON.parse(message.toString());
   const appIdValue = messageJson.appId;
   const measurement = parseFloat(messageJson.data);
 
+  // If new data is received from the Monitor-thingy
   if (appIdsMeasurements.includes(appIdValue) && topic === topicSubscribeMonitor) {
     await dbAddMQTTData(measurement, appIdValue, thingy_monitor);
     await notificationHandler(measurement, lt[appIdValue]);
   }
 
+  // If a button press is registered from the Notification-thingy
   if (messageJson.appId === "BUTTON" && measurement === 1 && topic === topicSubscribeNotification) {
     console.log("BUTTON PRESSED!")
 
@@ -106,9 +120,14 @@ async function handleMqttData(message, topic) {
 }
 
 
-
-async function publish(payload) {
-  client.publish(topicPublish, payload, function (err) {
+/**
+ * General function to publish a payload (message) to a.
+ *
+ * @param topic - topic to publish to
+ * @param payload - message to publish
+ */
+async function publish(topic, payload) {
+  client.publish(topic, payload, function (err) {
     if (err) {
       console.error('Error occurred while publishing:', err);
     } else {
@@ -117,24 +136,36 @@ async function publish(payload) {
   });
 }
 
+/**
+ * Enables the buzzer for Notification-thingy.
+ */
 async function enableBuzzer() {
   const payload = '{"appId":"BUZZER","data":{"frequency":2000},"messageType":"CFG_SET"}';
-  await publish(payload);
+  await publish(topicPublish, payload);
 }
 
+/**
+ * Disables the buzzer for Notification-thingy.
+ */
 async function disableBuzzer() {
   const payload = '{"appId":"BUZZER","data":{"frequency":0},"messageType":"CFG_SET"}';
-  await publish(payload);
+  await publish(topicPublish, payload);
 }
 
+/**
+ * Sets the LED to Blue for Notification-thingy.
+ */
 async function setLEDRed() {
   const payload = '{"appId":"LED","data":{"color":"ff0000"},"messageType":"CFG_SET"}';
-  await publish(payload);
+  await publish(topicPublish, payload);
 }
 
+/**
+ * Sets the LED to Red for Notification-thingy.
+ */
 async function setLEDBlue() {
   const payload = '{"appId":"LED","data":{"color":"0000ff"},"messageType":"CFG_SET"}';
-  await publish(payload);
+  await publish(topicPublish, payload);
 }
 
 
