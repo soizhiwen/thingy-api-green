@@ -84,7 +84,7 @@ async function dbCreateNotification(params) {
 async function dbUpdateNotification(id, params) {
   try {
     const query = {
-      text: "UPDATE notifications SET message=$1, timestamp=$2, plant_id=$3 WHERE id=$5 RETURNING *;",
+      text: "UPDATE notifications SET message=$1, timestamp=$2, plant_id=$3 WHERE id=$4 RETURNING *;",
       values: [params.message, params.timestamp, params.plant_id, id],
     };
     const { rows } = await pool.query(query);
