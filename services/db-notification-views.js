@@ -23,20 +23,38 @@ async function dbGetNotificationViewsByUserId(id) {
 }
 
 async function dbUpdateNotificationViews(id) {
+  const client = await pool.connect();
+
   try {
-    const query = {
+    await client.query("BEGIN");
+    const queryUpdate = {
       text: "UPDATE notification_views SET viewed=$1 WHERE user_id=$2 AND viewed=$3 RETURNING *;",
       values: [true, id, false],
     };
-    const { rows } = await pool.query(query);
+    const resUpdate = await client.query(queryUpdate);
 
-    if (rows.length === 0) {
-      return { status: 404, body: "Not found" };
+    const notificationIds = [];
+    for (let row of resUpdate.rows) {
+      notificationIds.push(row.notification_id);
+    }
+
+    const querySelect = {
+      text: "SELECT n.*, nv.user_id, nv.viewed FROM notification_views AS nv JOIN notifications AS n ON nv.notification_id=n.id WHERE nv.notification_id=ANY($1::int[]) AND nv.user_id=$2;",
+      values: [notificationIds, id],
+    };
+    const { rows } = await client.query(querySelect);
+    await client.query("COMMIT");
+
+    for (let row of rows) {
+      row.viewed = row.viewed ? "Read" : "New";
     }
 
     return { status: 200, body: rows };
   } catch (err) {
+    await client.query("ROLLBACK");
     return { status: 500, body: err };
+  } finally {
+    client.release();
   }
 }
 
