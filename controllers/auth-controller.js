@@ -5,7 +5,6 @@
 
 
 const router = require('koa-router')();
-
 const { createToken } = require('../services/auth-JWT');
 const { dbCreateUser, dbGetUserByEmail } = require("../services/db-users");
 

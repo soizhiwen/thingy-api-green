@@ -3,6 +3,7 @@
  */
 
 
+
 const { dbAddMQTTData } = require("../services/db-mqtt");
 
 const mqtt = require("mqtt");
@@ -25,7 +26,6 @@ const topicPublish = 'things/' + thingy_notification + '/shadow/update/accepted'
 
 /**
  * Initializes the listeners for MQTT messages.
- *
  */
 async function initMQTT() {
   // Handle connection events
@@ -171,10 +171,6 @@ async function setLEDBlue() {
 
 
 module.exports = {
-  enableBuzzer,
-  disableBuzzer,
-  setLEDRed,
-  setLEDBlue,
   initMQTT
 };
 

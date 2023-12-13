@@ -1,3 +1,9 @@
+/**
+ * This files interfaces with the database regarding users.
+ */
+
+
+
 const { pool } = require("../models/pg");
 
 /**

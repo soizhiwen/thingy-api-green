@@ -86,6 +86,12 @@ async function verifyAdminToken(ctx, next) {
     }
 }
 
+/**
+ * Decodes a request header's 'authorization' token and returns the id.
+ *
+ * @param ctx - Koa context object
+ * @returns {Promise<*|string>}
+ */
 async function getUserId(ctx) {
     const token = ctx.headers.authorization;
     if (!token) {
