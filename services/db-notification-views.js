@@ -46,19 +46,14 @@ async function dbUpdateNotificationViews(id) {
   try {
     await client.query("BEGIN");
     const queryUpdate = {
-      text: "UPDATE notification_views SET viewed=$1 WHERE user_id=$2 AND viewed=$3 RETURNING *;",
+      text: "UPDATE notification_views SET viewed=$1 WHERE user_id=$2 AND viewed=$3;",
       values: [true, id, false],
     };
-    const resUpdate = await client.query(queryUpdate);
-
-    const notificationIds = [];
-    for (let row of resUpdate.rows) {
-      notificationIds.push(row.notification_id);
-    }
+    await client.query(queryUpdate);
 
     const querySelect = {
-      text: "SELECT n.*, nv.user_id, nv.viewed FROM notification_views AS nv JOIN notifications AS n ON nv.notification_id=n.id WHERE nv.notification_id=ANY($1::int[]) AND nv.user_id=$2;",
-      values: [notificationIds, id],
+      text: "SELECT n.*, nv.user_id, nv.viewed FROM notification_views AS nv JOIN notifications AS n ON nv.notification_id=n.id JOIN users AS u ON nv.user_id=u.id WHERE nv.user_id=$1;",
+      values: [id],
     };
     const { rows } = await client.query(querySelect);
     await client.query("COMMIT");
