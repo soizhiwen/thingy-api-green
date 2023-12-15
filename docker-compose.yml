@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  db:
+  postgres_db:
     image: postgres
     restart: always
     ports:
@@ -11,3 +11,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=357357357
       - POSTGRES_DB=thingy-green-db
+
+  influx_db:
+    image: influxdb:latest
+    restart: always
+    ports:
+      - '8086:8086'
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME=ASE
+      - DOCKER_INFLUXDB_INIT_PASSWORD=123123123
+      - DOCKER_INFLUXDB_INIT_ORG=ASE2023-GREEN
+      - DOCKER_INFLUXDB_INIT_BUCKET=thingy
+      - DOCKER_INFLUX_INIT_TOKEN=xcqyzBumPDaNrzWz3Sjvdh-ZPNtw4zJlnsfsNkv1A5CxgRtCnwu_iS_Q0FzG4yBOKaVVeCu3nLBb30zrkF_29g==
