@@ -37,7 +37,6 @@ async function createToken (userId, username, role) {
 async function verifyToken (ctx, next) {
     console.log("Verifying token");
     const token = ctx.headers.authorization;
-    //console.log("Token: " + token);
     if (!token) { // if no token is found
         ctx.status = 401;
         ctx.body = { error: 'Unauthorized - Missing Token' };
@@ -50,7 +49,7 @@ async function verifyToken (ctx, next) {
         await next();
     } catch (err) {
         ctx.status = 401;
-        ctx.body = { error: 'Unauthorized - Invalid Token' };
+        ctx.body = { error: 'Unauthorized - Invalid Token | ' + err };
     }
 }
 
@@ -64,7 +63,6 @@ async function verifyToken (ctx, next) {
 async function verifyAdminToken(ctx, next) {
     console.log("Verifying Admin token");
     const token = ctx.headers.authorization;
-    //console.log("Token: " + token);
     if (!token) { // if no token is found
         ctx.status = 401;
         ctx.body = { error: 'Unauthorized - Missing Token' };
@@ -82,7 +80,7 @@ async function verifyAdminToken(ctx, next) {
         }
     } catch (err) {
         ctx.status = 401;
-        ctx.body = { error: 'Unauthorized - Invalid Token' };
+        ctx.body = { error: 'Unauthorized - Invalid Token | ' + err };
     }
 }
 

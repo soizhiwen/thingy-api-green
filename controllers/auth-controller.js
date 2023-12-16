@@ -7,6 +7,7 @@
 const router = require('koa-router')();
 const { createToken } = require('../services/auth-JWT');
 const { dbCreateUser, dbGetUserByEmail } = require("../services/db-users");
+const crypto = require('crypto');
 
 router.post('/register', registerAdmin)
     .post('/login', checkLogin);
@@ -21,7 +22,8 @@ router.post('/register', registerAdmin)
  */
 async function registerAdmin(ctx) {
     console.log("POST request to register admin!");
-    const adminParams = ctx.request.body;
+    let adminParams = ctx.request.body;
+    adminParams.password = await hashPw(adminParams.password);
 
     // Call DB Function to create a User
     const { status, body } = await dbCreateUser(adminParams);
@@ -43,7 +45,8 @@ async function registerAdmin(ctx) {
  */
 async function checkLogin(ctx) {
     const email = ctx.request.body.email;
-    const pw = ctx.request.body.password;
+    let pw = ctx.request.body.password;
+    pw = await hashPw(pw);
 
     const { status, body } = await dbGetUserByEmail(email);
     if (status === 200 && pw === body.password) { // User exists and the password is matching
@@ -58,5 +61,16 @@ async function checkLogin(ctx) {
         ctx.body = "User not found.";
     }
 }
+
+/**
+ *
+ * @param pw - password to hash
+ * @returns {Promise<string>} - hashed password
+ */
+async function hashPw(pw) {
+    return crypto.createHash('sha256').update(pw).digest('hex');
+}
+
+
 
 module.exports = router;
