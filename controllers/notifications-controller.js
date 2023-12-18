@@ -13,7 +13,9 @@ const {
   dbUpdateNotification,
   dbDeleteNotification,
 } = require("../services/db-notifications");
+const { sendWebsocket } = require("../services/socketIo");
 const router = require("koa-router")();
+
 
 router
   .get("/notifications/", verifyToken, listNotifications)
@@ -22,7 +24,6 @@ router
   .post("/notifications/", verifyToken, createNotification)
   .patch("/notifications/:id", verifyToken, updateNotification)
   .del("/notifications/:id", verifyToken, deleteNotification);
-
 /**
  * This middleware adds all notifications to the response body. No parameter needed.
  *
@@ -68,6 +69,7 @@ async function getNotificationByPlantId(ctx) {
 async function createNotification(ctx) {
   const params = ctx.request.body;
   const { status, body } = await dbCreateNotification(params);
+  await sendWebsocket('newNotification');
   ctx.body = body;
   ctx.status = status;
 }
@@ -82,6 +84,7 @@ async function updateNotification(ctx) {
   const id = ctx.params.id;
   const params = ctx.request.body;
   const { status, body } = await dbUpdateNotification(id, params);
+
   ctx.body = body;
   ctx.status = status;
 }
