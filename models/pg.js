@@ -73,7 +73,7 @@ async function createNotificationsTable() {
         id SERIAL PRIMARY KEY,
         message VARCHAR NOT NULL,
         timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
-        plant_id INTEGER REFERENCES plants NOT NULL
+        plant_id INTEGER REFERENCES plants ON DELETE CASCADE NOT NULL 
       );
       `;
 
@@ -90,8 +90,8 @@ async function createNotificationViewsTable() {
     const query = `
       CREATE TABLE IF NOT EXISTS notification_views
       (
-        notification_id INTEGER REFERENCES notifications NOT NULL,
-        user_id INTEGER REFERENCES users NOT NULL,
+        notification_id INTEGER REFERENCES notifications ON DELETE CASCADE NOT NULL,
+        user_id INTEGER REFERENCES users ON DELETE CASCADE NOT NULL,
         viewed BOOLEAN NOT NULL DEFAULT FALSE,
         PRIMARY KEY (notification_id, user_id)
       );
