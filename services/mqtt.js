@@ -115,7 +115,7 @@ async function handleMqttData(message, topic) {
   if (messageJson.appId === "BUTTON" && measurement === 1 && topic === topicSubscribeNotification) {
     console.log("BUTTON PRESSED!")
 
-    // DISABLE BUZZER AND CHANGE LED BACK TO BLUE
+    // Enables Buzzer and changes LED on Notification thingy
     await disableBuzzer();
     await setLEDBlue();
   }
