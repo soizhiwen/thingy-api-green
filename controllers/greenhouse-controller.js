@@ -19,7 +19,8 @@ async function getLastData(ctx) {
 }
 
 /**
- * This middleware retrieves data within the current time and the time span going back defined in 'start'.
+ * This middleware retrieves data of a measurement type within the current time and the time span going back defined in 'start'.
+ * Possible measurement types are: "AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID". The time span can be, e.g., '1d'.
  * The data is returned in the response body.
  *
  * @param ctx - Koa context object
