@@ -21,7 +21,6 @@ router.post('/register', registerAdmin)
 async function registerAdmin(ctx) {
     console.log("POST request to register admin!");
     let adminParams = ctx.request.body;
-    adminParams.password = await hashPw(adminParams.password);
 
     // Call DB Function to create a User
     const { status, body } = await dbCreateUser(adminParams);
