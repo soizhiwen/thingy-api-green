@@ -3,8 +3,9 @@
  */
 
 
-
 const { pool } = require("../models/pg");
+const { hashPw } = require("./auth-JWT");
+
 
 /**
  * Retrieves all users from the database.
@@ -82,10 +83,11 @@ async function dbGetUserByEmail(email) {
  */
 async function dbCreateUser(params) {
   console.log(`Received Add User Request: ${JSON.stringify(params)}`);
+  let pw = await hashPw(params.password);
   try {
     const query = {
       text: "INSERT INTO users(name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *;",
-      values: [params.name, params.email, params.password, params.role],
+      values: [params.name, params.email, pw , params.role],
     };
     const { rows } = await pool.query(query);
     return { status: 201, body: rows[0] };
@@ -105,10 +107,11 @@ async function dbCreateUser(params) {
  */
 async function dbUpdateUser(id, params) {
   console.log(`Received Update User request: ${JSON.stringify(params)}`);
+  let pw = await hashPw(params.password);
   try {
     const query = {
       text: "UPDATE users SET name=$1, email=$2, password=$3, role=$4 WHERE id=$5 RETURNING *;",
-      values: [params.name, params.email, params.password, params.role, id],
+      values: [params.name, params.email, pw, params.role, id],
     };
     const { rows } = await pool.query(query);
 

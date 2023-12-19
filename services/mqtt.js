@@ -100,13 +100,13 @@ const lt = {
  */
 async function handleMqttData(message, topic) {
   const messageJson = JSON.parse(message.toString());
-  const appIdValue = messageJson.appId;
+  const appIdM = messageJson.appId;
   const measurement = parseFloat(messageJson.data);
 
   // If new data is received from the Monitor-thingy
-  if (appIdsMeasurements.includes(appIdValue) && topic === topicSubscribeMonitor) {
-    await dbAddMQTTData(measurement, appIdValue, thingy_monitor);
-    await notificationHandler(measurement, lt[appIdValue]);
+  if (appIdsMeasurements.includes(appIdM) && topic === topicSubscribeMonitor) {
+    await dbAddMQTTData(measurement, appIdM, thingy_monitor);
+    await notificationHandler(measurement, lt[appIdM]);
   }
 
   // If a button press is registered from the Notification-thingy
