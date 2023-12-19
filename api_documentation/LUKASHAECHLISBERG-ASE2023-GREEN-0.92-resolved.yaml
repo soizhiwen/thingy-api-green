@@ -1,0 +1,1816 @@
+---
+openapi: 3.0.1
+info:
+  title: ASE2023-GREEN
+  description: "API documentation for Université de Fribourg (Switzerland) ASE2023 Project - Group Green. All API calls except login and register need an authorization token in the request. Simply add an 'authorization' header within the request. Testing the API documentation directly on SwaggerHub does not work. Use the Swggerhub Explorer or another program such as Postman to perform the API calls. We are unsure about the cause of this issue. The localhost can be used when the api is running on the local machine, whereas the soizhiwhen.com/api/ website can be used to call the API via our hosted server at the time of writing this, December 2023."
+  version: "0.92"
+servers:
+- url: http://localhost:8080
+- url: https://soizhiwen.com/api/
+paths:
+  /users/:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk3OTg4NCwiZXhwIjoxNzAyOTgzNDg0fQ.yRhyBhEecdk7ropCrFMTJ1y0Z_LbH1YlbEwQf9O6Hs4
+      responses:
+        "200":
+          description: Retreives the list of users. Needs a User or an Admin authorization token in the 'authorization' header.
+    post:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk3OTg4NCwiZXhwIjoxNzAyOTgzNDg0fQ.yRhyBhEecdk7ropCrFMTJ1y0Z_LbH1YlbEwQf9O6Hs4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_body'
+            examples:
+              example:
+                value: "{\r\n    \"name\": \"AnotherUser\",\r\n    \"email\": \"AnotherUser@mail.com\",\r\n    \"password\": \"SecurePw\",\r\n    \"role\": \"User\"\r\n}"
+      responses:
+        "200":
+          description: Creates a new user. Needs an Admin authorization token in the 'authorization' header.
+  /users/7:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk3OTg4NCwiZXhwIjoxNzAyOTgzNDg0fQ.yRhyBhEecdk7ropCrFMTJ1y0Z_LbH1YlbEwQf9O6Hs4
+      responses:
+        "200":
+          description: Retreives a user specified by the user_id in the route. Needs a User or an Admin authorization token in the 'authorization' header.
+    delete:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk3OTg4NCwiZXhwIjoxNzAyOTgzNDg0fQ.yRhyBhEecdk7ropCrFMTJ1y0Z_LbH1YlbEwQf9O6Hs4
+      responses:
+        "200":
+          description: Deletes the user specified by the user_id. Needs an Admin authorization token in the 'authorization' header.
+    patch:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk3OTg4NCwiZXhwIjoxNzAyOTgzNDg0fQ.yRhyBhEecdk7ropCrFMTJ1y0Z_LbH1YlbEwQf9O6Hs4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_7_body'
+            examples:
+              example:
+                value: "{\r\n    \"name\": \"UpdatedAnotherUser\",\r\n    \"email\": \"UpdatedAnotherUser@mail.com\",\r\n    \"password\": \"UpdatedAPW\",\r\n    \"role\": \"User\"\r\n}"
+      responses:
+        "200":
+          description: Patches the user specified by the user_id. Needs an Admin authorization token in the 'authorization' header.
+  /plants/:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MTk1MCwiZXhwIjoxNzAyOTQ1NTUwfQ.bYLZqk1B-Y7DI8BxIP3WU4fyhwKO7wAkmbFsoBrbxVc
+      responses:
+        "200":
+          description: Retreives a list of plants. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "228"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:19:29 GMT"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+              example:
+              - id: 2
+                name: plant01
+                harvest_date: 2013-11-03T08:00:00.000Z
+                min_temperature: "10"
+                max_temperature: "25"
+                min_humidity: "2"
+                max_humidity: "10"
+                min_co2: "3"
+                max_co2: "10"
+                min_air_quality: "4"
+                max_air_quality: "10"
+    post:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MTk1MCwiZXhwIjoxNzAyOTQ1NTUwfQ.bYLZqk1B-Y7DI8BxIP3WU4fyhwKO7wAkmbFsoBrbxVc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/plants_body'
+            examples:
+              example:
+                value: "{\r\n    \"name\": \"plant01\",\r\n    \"harvest_date\": \"2013-11-03 01:00:00-07\",\r\n    \"min_temperature\": 10,\r\n    \"max_temperature\": 25,\r\n    \"min_humidity\": 2,\r\n    \"max_humidity\": 10,\r\n    \"min_co2\": 3,\r\n    \"max_co2\": 10,\r\n    \"min_air_quality\": 4,\r\n    \"max_air_quality\": 10\r\n}"
+      responses:
+        "201":
+          description: Creates a new plant. Needs an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "226"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:19:36 GMT"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+              example:
+                id: 3
+                name: plant02
+                harvest_date: 2013-11-03T08:00:00.000Z
+                min_temperature: "10"
+                max_temperature: "25"
+                min_humidity: "2"
+                max_humidity: "10"
+                min_co2: "3"
+                max_co2: "10"
+                min_air_quality: "4"
+                max_air_quality: "10"
+  /plants/1:
+    delete:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MTk1MCwiZXhwIjoxNzAyOTQ1NTUwfQ.bYLZqk1B-Y7DI8BxIP3WU4fyhwKO7wAkmbFsoBrbxVc
+      responses:
+        "200":
+          description: Deletes the plant specified by the plant_id. Needs an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "1"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:20:36 GMT"
+          content:
+            application/json:
+              schema:
+                type: integer
+              example: 3
+    patch:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MTk1MCwiZXhwIjoxNzAyOTQ1NTUwfQ.bYLZqk1B-Y7DI8BxIP3WU4fyhwKO7wAkmbFsoBrbxVc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/plants_1_body'
+            examples:
+              example:
+                value: "{\r\n    \"name\": \"UpdatedPlant01\",\r\n    \"harvest_date\": \"2013-11-03 01:00:00-07\",\r\n    \"min_temperature\": 10,\r\n    \"max_temperature\": 25,\r\n    \"min_humidity\": 2,\r\n    \"max_humidity\": 10,\r\n    \"min_co2\": 3,\r\n    \"max_co2\": 10,\r\n    \"min_air_quality\": 4,\r\n    \"max_air_quality\": 10\r\n}"
+      responses:
+        "200":
+          description: Patches the plant specified by the plant_id. Needs an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "233"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:19:51 GMT"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+              example:
+                id: 3
+                name: UpdatedPlant01
+                harvest_date: 2013-11-03T08:00:00.000Z
+                min_temperature: "10"
+                max_temperature: "25"
+                min_humidity: "2"
+                max_humidity: "10"
+                min_co2: "3"
+                max_co2: "10"
+                min_air_quality: "4"
+                max_air_quality: "10"
+        "404":
+          description: ERROR
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "9"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:19:44 GMT"
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+  /register:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/register_body'
+            examples:
+              example:
+                value: "{\r\n    \"name\":\"A User2\",\r\n    \"email\":\"A.User@mail.com\",\r\n    \"password\":\"myPassword\",\r\n    \"role\":\"Admin\"\r\n    }"
+      responses:
+        "201":
+          description: Creates a new Admin. No authorization token needed.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            authorization:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MTkyNywiZXhwIjoxNzAyOTQ1NTI3fQ.qz7m_dauv5zoISARFMguGo9x4070vsJkn0Qyt45p5zA
+            Access-Control-Expose-Headers:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: authorization
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "144"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Mon, 18 Dec 2023 23:25:27 GMT"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+              example:
+                id: 1
+                name: A User2
+                email: A.User@mail.com
+                password: 76549b827ec46e705fd03831813fa52172338f0dfcbd711ed44b81a96dac51c6
+                role: Admin
+  /login:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login_body'
+            examples:
+              example:
+                value: "{\r\n    \"email\":\"A.User@mail.com\",\r\n    \"password\":\"myPassword\"\r\n}"
+      responses:
+        "200":
+          description: Logs-in an existing Admin or User. The response contains the respective authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            authorization:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MTkzNCwiZXhwIjoxNzAyOTQ1NTM0fQ.5yy6I-bjdqLIQrsfrDHI3Lro-jyliQVMt9ygra-25UI
+            Access-Control-Expose-Headers:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: authorization
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "144"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Mon, 18 Dec 2023 23:25:34 GMT"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+              example:
+                id: 1
+                name: A User2
+                email: A.User@mail.com
+                password: 76549b827ec46e705fd03831813fa52172338f0dfcbd711ed44b81a96dac51c6
+                role: Admin
+  /notifications/:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MjgxNywiZXhwIjoxNzAyOTQ2NDE3fQ.VYyZBON1BsclRv57jNTsdI_YvDgmIqY2bunaBeVO_as
+      responses:
+        "200":
+          description: Retreives the list of notifications for the user sccording to the 'authorization' token. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "5688"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:20:56 GMT"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+              example:
+              - id: 40
+                message: The plant01's value for temperature is outside the defined bounds at 26.6!
+                timestamp: 2023-12-19T00:20:49.159Z
+                plant_id: 2
+              - id: 39
+                message: The plant01's value for co2 is outside the defined bounds at 810.8!
+                timestamp: 2023-12-19T00:20:34.408Z
+                plant_id: 2
+              - id: 38
+                message: The plant01's value for air_quality is outside the defined bounds at 58.3!
+                timestamp: 2023-12-19T00:20:34.370Z
+                plant_id: 2
+              - id: 37
+                message: The plant01's value for humidity is outside the defined bounds at 28.9!
+                timestamp: 2023-12-19T00:20:34.292Z
+                plant_id: 2
+              - id: 36
+                message: The plant01's value for co2 is outside the defined bounds at 800.2!
+                timestamp: 2023-12-19T00:19:34.323Z
+                plant_id: 2
+              - id: 35
+                message: The plant01's value for air_quality is outside the defined bounds at 57.7!
+                timestamp: 2023-12-19T00:19:34.285Z
+                plant_id: 2
+              - id: 34
+                message: The plant01's value for humidity is outside the defined bounds at 31.4!
+                timestamp: 2023-12-19T00:19:34.208Z
+                plant_id: 2
+              - id: 33
+                message: The plant01's value for co2 is outside the defined bounds at 803.5!
+                timestamp: 2023-12-19T00:12:19.685Z
+                plant_id: 2
+              - id: 32
+                message: The plant01's value for air_quality is outside the defined bounds at 57.9!
+                timestamp: 2023-12-19T00:12:19.649Z
+                plant_id: 2
+              - id: 31
+                message: The plant01's value for humidity is outside the defined bounds at 31.6!
+                timestamp: 2023-12-19T00:12:19.573Z
+                plant_id: 2
+              - id: 30
+                message: The plant01's value for co2 is outside the defined bounds at 621!
+                timestamp: 2023-12-18T23:58:51.665Z
+                plant_id: 2
+              - id: 29
+                message: The plant01's value for air_quality is outside the defined bounds at 43!
+                timestamp: 2023-12-18T23:58:51.631Z
+                plant_id: 2
+              - id: 28
+                message: The plant01's value for humidity is outside the defined bounds at 25.7!
+                timestamp: 2023-12-18T23:58:51.564Z
+                plant_id: 2
+              - id: 27
+                message: The plant01's value for temperature is outside the defined bounds at 28.9!
+                timestamp: 2023-12-18T23:58:21.577Z
+                plant_id: 2
+              - id: 26
+                message: The plant01's value for co2 is outside the defined bounds at 649.6!
+                timestamp: 2023-12-18T23:57:51.673Z
+                plant_id: 2
+              - id: 25
+                message: The plant01's value for air_quality is outside the defined bounds at 47.2!
+                timestamp: 2023-12-18T23:57:51.637Z
+                plant_id: 2
+              - id: 24
+                message: The plant01's value for humidity is outside the defined bounds at 26.1!
+                timestamp: 2023-12-18T23:57:51.563Z
+                plant_id: 2
+              - id: 23
+                message: The plant01's value for temperature is outside the defined bounds at 28.5!
+                timestamp: 2023-12-18T23:57:21.904Z
+                plant_id: 2
+              - id: 22
+                message: The plant01's value for co2 is outside the defined bounds at 770.9!
+                timestamp: 2023-12-18T23:56:51.441Z
+                plant_id: 2
+              - id: 21
+                message: The plant01's value for air_quality is outside the defined bounds at 55.9!
+                timestamp: 2023-12-18T23:56:51.404Z
+                plant_id: 2
+              - id: 20
+                message: The plant01's value for humidity is outside the defined bounds at 26.8!
+                timestamp: 2023-12-18T23:56:51.323Z
+                plant_id: 2
+              - id: 19
+                message: The plant01's value for temperature is outside the defined bounds at 27.9!
+                timestamp: 2023-12-18T23:56:21.428Z
+                plant_id: 2
+              - id: 18
+                message: The plant01's value for co2 is outside the defined bounds at 835.3!
+                timestamp: 2023-12-18T23:55:51.549Z
+                plant_id: 2
+              - id: 17
+                message: The plant01's value for humidity is outside the defined bounds at 27.8!
+                timestamp: 2023-12-18T23:55:51.473Z
+                plant_id: 2
+              - id: 16
+                message: The plant01's value for air_quality is outside the defined bounds at 59.7!
+                timestamp: 2023-12-18T23:55:51.411Z
+                plant_id: 2
+              - id: 15
+                message: The plant01's value for temperature is outside the defined bounds at 27!
+                timestamp: 2023-12-18T23:55:21.353Z
+                plant_id: 2
+              - id: 14
+                message: The plant01's value for co2 is outside the defined bounds at 848.4!
+                timestamp: 2023-12-18T23:54:51.700Z
+                plant_id: 2
+              - id: 13
+                message: The plant01's value for air_quality is outside the defined bounds at 60.5!
+                timestamp: 2023-12-18T23:54:51.562Z
+                plant_id: 2
+              - id: 12
+                message: The plant01's value for humidity is outside the defined bounds at 29.2!
+                timestamp: 2023-12-18T23:54:51.481Z
+                plant_id: 2
+              - id: 11
+                message: The plant01's value for temperature is outside the defined bounds at 25.6!
+                timestamp: 2023-12-18T23:54:21.354Z
+                plant_id: 2
+              - id: 10
+                message: The plant01's value for co2 is outside the defined bounds at 810.6!
+                timestamp: 2023-12-18T23:53:51.427Z
+                plant_id: 2
+              - id: 9
+                message: The plant01's value for air_quality is outside the defined bounds at 58.3!
+                timestamp: 2023-12-18T23:53:51.391Z
+                plant_id: 2
+              - id: 8
+                message: The plant01's value for humidity is outside the defined bounds at 31.7!
+                timestamp: 2023-12-18T23:53:51.322Z
+                plant_id: 2
+              - id: 7
+                message: The plant01's value for co2 is outside the defined bounds at 765.4!
+                timestamp: 2023-12-18T23:50:34.818Z
+                plant_id: 2
+              - id: 6
+                message: The plant01's value for air_quality is outside the defined bounds at 55.6!
+                timestamp: 2023-12-18T23:50:34.677Z
+                plant_id: 2
+              - id: 5
+                message: The plant01's value for humidity is outside the defined bounds at 37.4!
+                timestamp: 2023-12-18T23:50:34.609Z
+                plant_id: 2
+              - id: 3
+                message: The plant01's value for co2 is outside the defined bounds at 824.5!
+                timestamp: 2023-12-18T23:42:11.662Z
+                plant_id: 2
+              - id: 2
+                message: The plant01's value for air_quality is outside the defined bounds at 59.1!
+                timestamp: 2023-12-18T23:42:11.627Z
+                plant_id: 2
+              - id: 1
+                message: The plant01's value for humidity is outside the defined bounds at 32.4!
+                timestamp: 2023-12-18T23:42:11.552Z
+                plant_id: 2
+    post:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MjgxNywiZXhwIjoxNzAyOTQ2NDE3fQ.VYyZBON1BsclRv57jNTsdI_YvDgmIqY2bunaBeVO_as
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notifications_body'
+            examples:
+              example:
+                value: "{\r\n    \"message\": \"A notification message\",\r\n    \"timestamp\": \"2023-12-18T23:42:11.662Z\",\r\n    \"plant_id\": 2\r\n}"
+      responses:
+        "201":
+          description: Creates a new notification. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "96"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:21:30 GMT"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+              example:
+                id: 41
+                message: A notification message
+                timestamp: 2023-12-18T23:42:11.662Z
+                plant_id: 2
+  /notifications/1:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MjgxNywiZXhwIjoxNzAyOTQ2NDE3fQ.VYyZBON1BsclRv57jNTsdI_YvDgmIqY2bunaBeVO_as
+      responses:
+        "200":
+          description: Retreives the notification specified by its id. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "146"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:21:05 GMT"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+              example:
+              - id: 1
+                message: The plant01's value for humidity is outside the defined bounds at 32.4!
+                timestamp: 2023-12-18T23:42:11.552Z
+                plant_id: 2
+  /notifications/plants/2:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MjgxNywiZXhwIjoxNzAyOTQ2NDE3fQ.VYyZBON1BsclRv57jNTsdI_YvDgmIqY2bunaBeVO_as
+      responses:
+        "200":
+          description: Retreives a list of notifications for a specified plant by the plant id defined in the route. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "5688"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:21:11 GMT"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+              example:
+              - id: 40
+                message: The plant01's value for temperature is outside the defined bounds at 26.6!
+                timestamp: 2023-12-19T00:20:49.159Z
+                plant_id: 2
+              - id: 39
+                message: The plant01's value for co2 is outside the defined bounds at 810.8!
+                timestamp: 2023-12-19T00:20:34.408Z
+                plant_id: 2
+              - id: 38
+                message: The plant01's value for air_quality is outside the defined bounds at 58.3!
+                timestamp: 2023-12-19T00:20:34.370Z
+                plant_id: 2
+              - id: 37
+                message: The plant01's value for humidity is outside the defined bounds at 28.9!
+                timestamp: 2023-12-19T00:20:34.292Z
+                plant_id: 2
+              - id: 36
+                message: The plant01's value for co2 is outside the defined bounds at 800.2!
+                timestamp: 2023-12-19T00:19:34.323Z
+                plant_id: 2
+              - id: 35
+                message: The plant01's value for air_quality is outside the defined bounds at 57.7!
+                timestamp: 2023-12-19T00:19:34.285Z
+                plant_id: 2
+              - id: 34
+                message: The plant01's value for humidity is outside the defined bounds at 31.4!
+                timestamp: 2023-12-19T00:19:34.208Z
+                plant_id: 2
+              - id: 33
+                message: The plant01's value for co2 is outside the defined bounds at 803.5!
+                timestamp: 2023-12-19T00:12:19.685Z
+                plant_id: 2
+              - id: 32
+                message: The plant01's value for air_quality is outside the defined bounds at 57.9!
+                timestamp: 2023-12-19T00:12:19.649Z
+                plant_id: 2
+              - id: 31
+                message: The plant01's value for humidity is outside the defined bounds at 31.6!
+                timestamp: 2023-12-19T00:12:19.573Z
+                plant_id: 2
+              - id: 30
+                message: The plant01's value for co2 is outside the defined bounds at 621!
+                timestamp: 2023-12-18T23:58:51.665Z
+                plant_id: 2
+              - id: 29
+                message: The plant01's value for air_quality is outside the defined bounds at 43!
+                timestamp: 2023-12-18T23:58:51.631Z
+                plant_id: 2
+              - id: 28
+                message: The plant01's value for humidity is outside the defined bounds at 25.7!
+                timestamp: 2023-12-18T23:58:51.564Z
+                plant_id: 2
+              - id: 27
+                message: The plant01's value for temperature is outside the defined bounds at 28.9!
+                timestamp: 2023-12-18T23:58:21.577Z
+                plant_id: 2
+              - id: 26
+                message: The plant01's value for co2 is outside the defined bounds at 649.6!
+                timestamp: 2023-12-18T23:57:51.673Z
+                plant_id: 2
+              - id: 25
+                message: The plant01's value for air_quality is outside the defined bounds at 47.2!
+                timestamp: 2023-12-18T23:57:51.637Z
+                plant_id: 2
+              - id: 24
+                message: The plant01's value for humidity is outside the defined bounds at 26.1!
+                timestamp: 2023-12-18T23:57:51.563Z
+                plant_id: 2
+              - id: 23
+                message: The plant01's value for temperature is outside the defined bounds at 28.5!
+                timestamp: 2023-12-18T23:57:21.904Z
+                plant_id: 2
+              - id: 22
+                message: The plant01's value for co2 is outside the defined bounds at 770.9!
+                timestamp: 2023-12-18T23:56:51.441Z
+                plant_id: 2
+              - id: 21
+                message: The plant01's value for air_quality is outside the defined bounds at 55.9!
+                timestamp: 2023-12-18T23:56:51.404Z
+                plant_id: 2
+              - id: 20
+                message: The plant01's value for humidity is outside the defined bounds at 26.8!
+                timestamp: 2023-12-18T23:56:51.323Z
+                plant_id: 2
+              - id: 19
+                message: The plant01's value for temperature is outside the defined bounds at 27.9!
+                timestamp: 2023-12-18T23:56:21.428Z
+                plant_id: 2
+              - id: 18
+                message: The plant01's value for co2 is outside the defined bounds at 835.3!
+                timestamp: 2023-12-18T23:55:51.549Z
+                plant_id: 2
+              - id: 17
+                message: The plant01's value for humidity is outside the defined bounds at 27.8!
+                timestamp: 2023-12-18T23:55:51.473Z
+                plant_id: 2
+              - id: 16
+                message: The plant01's value for air_quality is outside the defined bounds at 59.7!
+                timestamp: 2023-12-18T23:55:51.411Z
+                plant_id: 2
+              - id: 15
+                message: The plant01's value for temperature is outside the defined bounds at 27!
+                timestamp: 2023-12-18T23:55:21.353Z
+                plant_id: 2
+              - id: 14
+                message: The plant01's value for co2 is outside the defined bounds at 848.4!
+                timestamp: 2023-12-18T23:54:51.700Z
+                plant_id: 2
+              - id: 13
+                message: The plant01's value for air_quality is outside the defined bounds at 60.5!
+                timestamp: 2023-12-18T23:54:51.562Z
+                plant_id: 2
+              - id: 12
+                message: The plant01's value for humidity is outside the defined bounds at 29.2!
+                timestamp: 2023-12-18T23:54:51.481Z
+                plant_id: 2
+              - id: 11
+                message: The plant01's value for temperature is outside the defined bounds at 25.6!
+                timestamp: 2023-12-18T23:54:21.354Z
+                plant_id: 2
+              - id: 10
+                message: The plant01's value for co2 is outside the defined bounds at 810.6!
+                timestamp: 2023-12-18T23:53:51.427Z
+                plant_id: 2
+              - id: 9
+                message: The plant01's value for air_quality is outside the defined bounds at 58.3!
+                timestamp: 2023-12-18T23:53:51.391Z
+                plant_id: 2
+              - id: 8
+                message: The plant01's value for humidity is outside the defined bounds at 31.7!
+                timestamp: 2023-12-18T23:53:51.322Z
+                plant_id: 2
+              - id: 7
+                message: The plant01's value for co2 is outside the defined bounds at 765.4!
+                timestamp: 2023-12-18T23:50:34.818Z
+                plant_id: 2
+              - id: 6
+                message: The plant01's value for air_quality is outside the defined bounds at 55.6!
+                timestamp: 2023-12-18T23:50:34.677Z
+                plant_id: 2
+              - id: 5
+                message: The plant01's value for humidity is outside the defined bounds at 37.4!
+                timestamp: 2023-12-18T23:50:34.609Z
+                plant_id: 2
+              - id: 3
+                message: The plant01's value for co2 is outside the defined bounds at 824.5!
+                timestamp: 2023-12-18T23:42:11.662Z
+                plant_id: 2
+              - id: 2
+                message: The plant01's value for air_quality is outside the defined bounds at 59.1!
+                timestamp: 2023-12-18T23:42:11.627Z
+                plant_id: 2
+              - id: 1
+                message: The plant01's value for humidity is outside the defined bounds at 32.4!
+                timestamp: 2023-12-18T23:42:11.552Z
+                plant_id: 2
+  /notifications/4:
+    delete:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MjgxNywiZXhwIjoxNzAyOTQ2NDE3fQ.VYyZBON1BsclRv57jNTsdI_YvDgmIqY2bunaBeVO_as
+      responses:
+        "200":
+          description: Deletes the notification specified by the notification id defined in the route. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "2"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:22:05 GMT"
+          content:
+            application/json:
+              schema:
+                type: integer
+              example: 41
+    patch:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiQSBVc2VyMiIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjk0MjgxNywiZXhwIjoxNzAyOTQ2NDE3fQ.VYyZBON1BsclRv57jNTsdI_YvDgmIqY2bunaBeVO_as
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notifications_4_body'
+            examples:
+              example:
+                value: "{\r\n    \"message\": \"An updated notification message\",\r\n    \"timestamp\": \"2023-12-18T23:42:11.662Z\",\r\n    \"plant_id\": 2\r\n}"
+      responses:
+        "200":
+          description: Patches the notification specified by the notification id defined in the route. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "105"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:21:47 GMT"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+              example:
+                id: 41
+                message: An updated notification message
+                timestamp: 2023-12-18T23:42:11.662Z
+                plant_id: 2
+  /notification-views/:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsInVzZXJuYW1lIjoiVXNlcjEiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjk0NDU4NywiZXhwIjoxNzAyOTQ4MTg3fQ.Uv2aTdr4abQDFd-1NCd0j4nxfZblKnZCu8Gb6z0Zjzo
+      responses:
+        "200":
+          description: Retreives a list of the notification-views from a user or admin's authentication token defined in the 'authorization' header. Needs a User or an Admin authorization token in the 'authorization' header.
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "1734"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:21:21 GMT"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+              example:
+              - id: 31
+                message: The plant01's value for humidity is outside the defined bounds at 31.6!
+                timestamp: 2023-12-19T00:12:19.573Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 32
+                message: The plant01's value for air_quality is outside the defined bounds at 57.9!
+                timestamp: 2023-12-19T00:12:19.649Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 33
+                message: The plant01's value for co2 is outside the defined bounds at 803.5!
+                timestamp: 2023-12-19T00:12:19.685Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 34
+                message: The plant01's value for humidity is outside the defined bounds at 31.4!
+                timestamp: 2023-12-19T00:19:34.208Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+              - id: 35
+                message: The plant01's value for air_quality is outside the defined bounds at 57.7!
+                timestamp: 2023-12-19T00:19:34.285Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+              - id: 36
+                message: The plant01's value for co2 is outside the defined bounds at 800.2!
+                timestamp: 2023-12-19T00:19:34.323Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+              - id: 37
+                message: The plant01's value for humidity is outside the defined bounds at 28.9!
+                timestamp: 2023-12-19T00:20:34.292Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+              - id: 38
+                message: The plant01's value for air_quality is outside the defined bounds at 58.3!
+                timestamp: 2023-12-19T00:20:34.370Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+              - id: 39
+                message: The plant01's value for co2 is outside the defined bounds at 810.8!
+                timestamp: 2023-12-19T00:20:34.408Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+              - id: 40
+                message: The plant01's value for temperature is outside the defined bounds at 26.6!
+                timestamp: 2023-12-19T00:20:49.159Z
+                plant_id: 2
+                user_id: 5
+                viewed: New
+    patch:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsInVzZXJuYW1lIjoiVXNlcjEiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjk0NDU4NywiZXhwIjoxNzAyOTQ4MTg3fQ.Uv2aTdr4abQDFd-1NCd0j4nxfZblKnZCu8Gb6z0Zjzo
+      responses:
+        "200":
+          description: "Patches the notification-views table, i.e., sets the notification-views to 'Read', specified by a user or admin's authorization token. Needs a User or an Admin authorization token in the 'authorization' header."
+          headers:
+            Keep-Alive:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: timeout=5
+            Access-Control-Allow-Origin:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: ""
+            Connection:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: keep-alive
+            Vary:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: Origin
+            Content-Length:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "2262"
+            Date:
+              style: simple
+              explode: false
+              schema:
+                type: string
+              example: "Tue, 19 Dec 2023 00:24:06 GMT"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+              example:
+              - id: 31
+                message: The plant01's value for humidity is outside the defined bounds at 31.6!
+                timestamp: 2023-12-19T00:12:19.573Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 32
+                message: The plant01's value for air_quality is outside the defined bounds at 57.9!
+                timestamp: 2023-12-19T00:12:19.649Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 33
+                message: The plant01's value for co2 is outside the defined bounds at 803.5!
+                timestamp: 2023-12-19T00:12:19.685Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 34
+                message: The plant01's value for humidity is outside the defined bounds at 31.4!
+                timestamp: 2023-12-19T00:19:34.208Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 35
+                message: The plant01's value for air_quality is outside the defined bounds at 57.7!
+                timestamp: 2023-12-19T00:19:34.285Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 36
+                message: The plant01's value for co2 is outside the defined bounds at 800.2!
+                timestamp: 2023-12-19T00:19:34.323Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 37
+                message: The plant01's value for humidity is outside the defined bounds at 28.9!
+                timestamp: 2023-12-19T00:20:34.292Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 38
+                message: The plant01's value for air_quality is outside the defined bounds at 58.3!
+                timestamp: 2023-12-19T00:20:34.370Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 39
+                message: The plant01's value for co2 is outside the defined bounds at 810.8!
+                timestamp: 2023-12-19T00:20:34.408Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 40
+                message: The plant01's value for temperature is outside the defined bounds at 26.6!
+                timestamp: 2023-12-19T00:20:49.159Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 42
+                message: The plant01's value for humidity is outside the defined bounds at 27.5!
+                timestamp: 2023-12-19T00:21:34.119Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 43
+                message: The plant01's value for air_quality is outside the defined bounds at 54.6!
+                timestamp: 2023-12-19T00:21:34.190Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+              - id: 44
+                message: The plant01's value for co2 is outside the defined bounds at 748.1!
+                timestamp: 2023-12-19T00:21:34.225Z
+                plant_id: 2
+                user_id: 5
+                viewed: Read
+  /greenhouse/TEMP/1d:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsInVzZXJuYW1lIjoiVXNlcjEiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjk0NDU4NywiZXhwIjoxNzAyOTQ4MTg3fQ.Uv2aTdr4abQDFd-1NCd0j4nxfZblKnZCu8Gb6z0Zjzo
+      responses:
+        "200":
+          description: "Retreives a range of mesured sensory data of a specific measurement type from the greenhouse. Possible measurement types are: 'AIR_QUAL', 'CO2_EQUIV', 'TEMP', 'HUMID'; which are defined in the route. The timespan can, e.g., be '1d' and is also defined in the route. Needs a User or an Admin authorization token in the 'authorization' header "
+  /greenhouse/:
+    get:
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        examples:
+          example:
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsInVzZXJuYW1lIjoiVXNlcjEiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjk0NDU4NywiZXhwIjoxNzAyOTQ4MTg3fQ.Uv2aTdr4abQDFd-1NCd0j4nxfZblKnZCu8Gb6z0Zjzo
+      responses:
+        "200":
+          description: Retreives the last mesured sensory data from the greenhouse. Needs a User or an Admin authorization token in the 'authorization' header.
+components:
+  schemas:
+    register_body:
+      required:
+      - email
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      additionalProperties: false
+    notifications_4_body:
+      required:
+      - message
+      - plant_id
+      - timestamp
+      type: object
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+        plant_id:
+          type: integer
+      additionalProperties: false
+    login_body:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+    users_body:
+      required:
+      - email
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      additionalProperties: false
+    inline_response_201:
+      required:
+      - email
+      - id
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      additionalProperties: false
+    inline_response_200_1:
+      required:
+      - id
+      - message
+      - plant_id
+      - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+        plant_id:
+          type: integer
+      additionalProperties: false
+    inline_response_200:
+      required:
+      - harvest_date
+      - id
+      - max_air_quality
+      - max_co2
+      - max_humidity
+      - max_temperature
+      - min_air_quality
+      - min_co2
+      - min_humidity
+      - min_temperature
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        harvest_date:
+          type: string
+        min_temperature:
+          type: string
+        max_temperature:
+          type: string
+        min_humidity:
+          type: string
+        max_humidity:
+          type: string
+        min_co2:
+          type: string
+        max_co2:
+          type: string
+        min_air_quality:
+          type: string
+        max_air_quality:
+          type: string
+      additionalProperties: false
+    inline_response_200_2:
+      required:
+      - id
+      - message
+      - plant_id
+      - timestamp
+      - user_id
+      - viewed
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+        plant_id:
+          type: integer
+        user_id:
+          type: integer
+        viewed:
+          type: string
+      additionalProperties: false
+    notifications_body:
+      required:
+      - message
+      - plant_id
+      - timestamp
+      type: object
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+        plant_id:
+          type: integer
+      additionalProperties: false
+    users_7_body:
+      required:
+      - email
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      additionalProperties: false
+    plants_body:
+      required:
+      - harvest_date
+      - max_air_quality
+      - max_co2
+      - max_humidity
+      - max_temperature
+      - min_air_quality
+      - min_co2
+      - min_humidity
+      - min_temperature
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        harvest_date:
+          type: string
+        min_temperature:
+          type: integer
+        max_temperature:
+          type: integer
+        min_humidity:
+          type: integer
+        max_humidity:
+          type: integer
+        min_co2:
+          type: integer
+        max_co2:
+          type: integer
+        min_air_quality:
+          type: integer
+        max_air_quality:
+          type: integer
+      additionalProperties: false
+    plants_1_body:
+      required:
+      - harvest_date
+      - max_air_quality
+      - max_co2
+      - max_humidity
+      - max_temperature
+      - min_air_quality
+      - min_co2
+      - min_humidity
+      - min_temperature
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        harvest_date:
+          type: string
+        min_temperature:
+          type: integer
+        max_temperature:
+          type: integer
+        min_humidity:
+          type: integer
+        max_humidity:
+          type: integer
+        min_co2:
+          type: integer
+        max_co2:
+          type: integer
+        min_air_quality:
+          type: integer
+        max_air_quality:
+          type: integer
+      additionalProperties: false
+  securitySchemes: {}
