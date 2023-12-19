@@ -70,6 +70,7 @@ async function createNotification(ctx) {
   const params = ctx.request.body;
   const { status, body } = await dbCreateNotification(params);
   await sendWebsocket('newNotification');
+  
   ctx.body = body;
   ctx.status = status;
 }
