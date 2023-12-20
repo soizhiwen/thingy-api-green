@@ -2,7 +2,7 @@
 openapi: 3.0.1
 info:
   title: ASE2023-GREEN
-  description: "API documentation for Université de Fribourg (Switzerland) ASE2023 Project - Group Green. All API calls except login and register need an authorization token in the request. Simply add an 'authorization' header within the request. Testing the API documentation directly on SwaggerHub does not work. Use the Swaggerhub Explorer or another program such as Postman to perform the API calls. The localhost can be used when the API is running on the local machine, whereas the 'https://soizhiwen.com/api' website can be used to call the API via our hosted server which also enables to ineract with the accompanying interface reachable via 'https://soizhiwen.com'. This server is accessible at the time of writing this, December 2023."
+  description: "API documentation for Université de Fribourg (Switzerland) ASE2023 Project - Group Green. All API calls except login and register need an authorization token in the request. Simply add an 'authorization' header within the request. The localhost can be used when the API is running on the local machine, whereas the 'https://soizhiwen.com/api' website can be used to call the API via our hosted server which also enables to ineract with the accompanying interface reachable via 'https://soizhiwen.com'. This server is accessible at the time of writing this, December 2023."
   version: "1.0"
 servers:
 - url: https://soizhiwen.com/api/
