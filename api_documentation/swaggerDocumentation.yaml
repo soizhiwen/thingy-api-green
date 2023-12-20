@@ -1,0 +1,484 @@
+---
+openapi: 3.0.1
+info:
+  title: ASE2023-GREEN
+  description: "API documentation for Université de Fribourg (Switzerland) ASE2023 Project - Group Green. All API calls except login and register need an authorization token in the request. Simply add an 'authorization' header within the request. Testing the API documentation directly on SwaggerHub does not work. Use the Swggerhub Explorer or another program such as Postman to perform the API calls. We are unsure about the cause of this issue. The localhost can be used when the api is running on the local machine, whereas the soizhiwhen.com/api/ website can be used to call the API via our hosted server at the time of writing this, December 2023."
+  version: "0.92"
+servers:
+- url: http://localhost:8080
+- url: https://soizhiwen.com/api/
+paths:
+  /users/:
+    get:
+      responses:
+        "200":
+          description: get all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user' 
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        "200":
+          description: added user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user' 
+          
+  /users/{userId}:
+    get:
+      parameters:
+      - name: userId
+        in: path
+        description: id of user to return
+        required: true
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: Retreives a user specified by the userId in the route. Needs a User or an Admin authorization token in the 'authorization' header.
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/user' 
+    delete:
+      parameters:
+      - name: userId
+        in: path
+        description: id of user to be deleted
+        required: true
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: Deletes the user specified by the userId and returns that userId. Needs an Admin authorization token in the 'authorization' header.
+          content:
+            application/json:
+              schema:
+                type: integer
+    patch:
+      parameters:
+      - name: userId
+        in: path
+        description: id of user to be updated
+        required: true
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+          
+  /plants/:
+    get:
+      responses:
+        "200":
+          description: retrieves all plants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/plant' 
+          
+  /plants/{plantId}:
+    get:
+      parameters:
+      - name: plantId
+        in: path
+        description: id of plant to return
+        required: true
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: returns plant of specified plant id
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/plant' 
+    delete:
+      parameters:
+      - name: plantId
+        in: path
+        description: id of plant to be deleted
+        required: true
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: returns id of deleted plant
+          content:
+            application/json:
+              schema: 
+                type: integer
+    patch:
+      parameters:
+      - name: plantId
+        in: path
+        description: id of plant to be updated
+        required: true
+        schema: 
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/plant'
+      responses:
+        "200":
+          description: updated plant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/plant'
+  /register:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/register'
+      responses:
+        "201":
+          description: Creates a new Admin. No authorization token needed.
+          headers:
+            authorization:
+              schema:
+                type: string
+  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+      responses:
+        "200":
+          description: logged in user
+          headers:
+            authorization:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+                
+  /notifications/:
+    get:
+      responses:
+        "200":
+          description: return all notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notification'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notification'
+      responses:
+        "201":
+          description: new notification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notification'
+                
+  /notifications/{notificationId}:
+    get:
+      parameters:
+      - name: notificationId
+        required: true
+        in: path
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: get notification of specified id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notification'
+    delete:
+      parameters:
+      - name: notificationId
+        required: true
+        in: path
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: id of deleted notification
+          content:
+            application/json:
+              schema:
+                type: integer
+    patch:
+      parameters:
+      - name: notificationId
+        required: true
+        in: path
+        schema: 
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notification'
+      responses:
+        "200":
+          description: updated notification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notification'
+                
+  /notifications/plants/{plantId}:
+    get:
+      parameters:
+      - name: plantId
+        required: true
+        in: path
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: notifications of specified plant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notification'
+
+  /notification-views/:
+    get:
+      responses:
+        "200":
+          description: get all notifications with view information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notificationView'
+    patch:
+      description: Patches the notification-views table, i.e., sets the notification-views to 'Read', specified by a user or admin's authorization token.
+      responses:
+        "200":
+          description: updated notificationView
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/notificationView'
+                  
+  /greenhouse/{appId}/{start}:
+    get:
+      parameters:
+      - name: appId
+        in: path
+        required: true
+        schema: 
+          type: string
+      - name: start
+        in: path
+        required: true
+        schema: 
+          type: integer
+      responses:
+        "200":
+          description: get all values of appId since start point
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/greenhouseDataPoint'
+          
+  /greenhouse/:
+    get:
+      responses:
+        "200":
+          description: fetched current greenhouse data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/currentGreenhouse'
+          
+components:
+  schemas:
+    greenhouseDataPoint:
+      required:
+        - timestamp
+        - value
+      type: object
+      properties:
+        timestamp:
+          type: string
+        value:
+          type: integer
+        
+    currentGreenhouse:
+      required:
+        - timestamp
+        - AIR_QUAL
+        - CO2_EQUIV
+        - HUMID
+        - TEMP
+      type: object
+      properties:
+        timestamp:
+          type: string
+        AIR_QUAL:
+          type: integer
+        CO2_EQUIV:
+          type: integer
+        HUMID:
+          type: integer
+        TEMP:
+          type: integer
+          
+    register:
+      required:
+      - email
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+    notification:
+      required:
+      - message
+      - plant_id
+      - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+        plant_id:
+          type: integer
+    login:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    user:
+      required:
+      - email
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+    plant:
+      required:
+      - max_air_quality
+      - max_co2
+      - max_humidity
+      - max_temperature
+      - min_air_quality
+      - min_co2
+      - min_humidity
+      - min_temperature
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        harvest_date:
+          type: string
+        min_temperature:
+          type: string
+        max_temperature:
+          type: string
+        min_humidity:
+          type: string
+        max_humidity:
+          type: string
+        min_co2:
+          type: string
+        max_co2:
+          type: string
+        min_air_quality:
+          type: string
+        max_air_quality:
+          type: string
+    notificationView:
+      required:
+      - id
+      - message
+      - plant_id
+      - timestamp
+      - user_id
+      - viewed
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+        plant_id:
+          type: integer
+        user_id:
+          type: integer
+        viewed:
+          type: string
