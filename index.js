@@ -2,20 +2,17 @@ const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const cors = require("@koa/cors");
 const { getNotificationWebSocket,getGreenhouseWebSocket } = require("./services/socketIo");
+const yamljs = require('yamljs');
+const { koaSwagger } = require('koa2-swagger-ui');
+
+
 
 var app = new Koa();
 
 const initMQTT = require("./services/mqtt").initMQTT;
 
-const {EventEmitter} = require('events');
+const spec = yamljs.load('./api_documentation/swaggerDocumentation.yaml');
 
-const emitter = new EventEmitter();
-
-emitter.on('send_mail', (payload) => {
-  console.log(payload);
-});
-
-emitter.emit('send_email', 'Test email');
 
 
 
@@ -69,3 +66,12 @@ io.on('connection',(socket)=>{
 
 })
 
+//swagger
+app.use(
+  koaSwagger({
+    routePrefix: '/docs', 
+    swaggerOptions: {
+      spec
+    },
+  }),
+);

@@ -87,7 +87,7 @@ async function notificationHandler(measurement, measurementType) {
 
             
             // Websocket call for new notification alert
-            await sendWebsocket('greeenhouseData');
+            await sendWebsocket('newNotification');
 
 
             // Set thingy_notification state back to 'normal'
