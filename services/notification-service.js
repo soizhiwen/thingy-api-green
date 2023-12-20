@@ -35,18 +35,25 @@ async function checkValues(measurement, measurementType) {
 }
 
 
-const mTypes = {"temperature": 0, "humidity": 0, "co2": 0, "air_quality": 0};
+const mTypes = {"temperature": 0, "humidity": 0, "co2": 0, "air_quality": 0}; // List of possible measurement Types
+const slowDownNotification = 4; // The higher the value the slower new notifications about out of range values are sent out.
 
-
+/**
+ * Slows down the notification according to 'slowDownNotification' value; '1' is about 15 seconds, thus, '4' equals to about 1 minute.
+ * Returns true if one measurement type has reached the same value as 'slowDownNotification'.
+ *
+ * @param measurementType
+ * @returns {Promise<boolean>}
+ */
 async function checkNotificationEvent(measurementType) {
     if (mTypes.hasOwnProperty(measurementType)) {
         mTypes[measurementType] += 1;
-        if (mTypes[measurementType] >= 4) {
-            // Reset the value to 0 when it reaches 4
+        if (mTypes[measurementType] >= slowDownNotification) {
+            // Reset the value to 0 when it reaches slowDownNotification
             mTypes[measurementType] = 0;
             return true;
         } else {
-            console.log("NOT YET REACHED NUMBER 4");
+            console.log("Number of notification steps of "  + measurementType + " is: " + mTypes[measurementType] + "; Needed: " + slowDownNotification);
         }
     } else {
         // Handle the case where measurementType is not present in mTypes
@@ -76,16 +83,15 @@ async function notificationHandler(measurement, measurementType) {
 
             const params = {message: message, timestamp: timestamp, plant_id: retPlant.id};
             const notification = await dbCreateNotification(params);
-
             console.log(notification);
 
             // TODO: Send notification to Client (via WebSocket)
 
 
-            // Set thingy_notification state
 
-            // await require("./mqtt").enableBuzzer();
-            // await require("./mqtt").setLEDRed();
+            // Set thingy_notification state back to 'normal'
+            await require("./mqtt").setLEDRed();
+            await require("./mqtt").enableBuzzer();
         }
     }
 }

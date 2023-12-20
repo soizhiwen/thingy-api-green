@@ -83,9 +83,9 @@ async function initMQTT() {
 }
 
 
-const appIdsMeasurements = ["AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID"];
+const appIdsMeasurements = ["AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID"]; // List off used mqtt data measurements
 
-const lt = {
+const lt = { // dictionary from mqtt data type to internal measurement type
   "AIR_QUAL": "air_quality",
   "CO2_EQUIV": "co2",
   "TEMP": "temperature",
@@ -172,7 +172,7 @@ async function setLEDBlue() {
 
 
 module.exports = {
-  initMQTT
+  initMQTT, enableBuzzer, setLEDRed
 };
 
 

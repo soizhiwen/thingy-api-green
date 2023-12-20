@@ -119,5 +119,5 @@ async function createTables() {
 createTables();
 
 module.exports = {
-  pool,
-};
+  pool
+}
