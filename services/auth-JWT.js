@@ -105,6 +105,7 @@ async function getUserId(ctx) {
 }
 
 /**
+ * Hashes a given password and returns it as a hexadecimal string.
  *
  * @param pw - password to hash
  * @returns {Promise<string>} - hashed password

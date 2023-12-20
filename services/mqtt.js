@@ -84,7 +84,6 @@ async function initMQTT() {
 
 
 const appIdsMeasurements = ["AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID"];
-//const appIdsDB = ["temperature", "humidity", "co2", "air_quality"];
 
 const lt = {
   "AIR_QUAL": "air_quality",

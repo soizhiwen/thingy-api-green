@@ -41,16 +41,12 @@ async function registerAdmin(ctx) {
  * @param ctx - Koa context object
  */
 async function checkLogin(ctx) {
+    console.log("Checking Login!");
     const email = ctx.request.body.email;
     let pw = ctx.request.body.password;
     pw = await hashPw(pw);
 
     const { status, body } = await dbGetUserByEmail(email);
-    //console.log(body.id);
-    //console.log(body.name);
-    //console.log(body.role);
-    //console.log(body.password);
-    //console.log(pw);
     if (status === 200 && pw === body.password) { // User exists and the password is matching
         // Create Authorization Token
         const token = await createToken(body.id, body.name, body.role);
@@ -58,7 +54,6 @@ async function checkLogin(ctx) {
         ctx.set('authorization', token);
         ctx.body = body;
         ctx.status = status;
-        //console.log("Auth succ");
     } else {
         ctx.status = 404;
         ctx.body = "ERROR " + body;

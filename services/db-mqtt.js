@@ -1,7 +1,6 @@
 const { writeClient } = require("../models/influx");
 const { Point } = require("@influxdata/influxdb-client");
 
-//const thingyMonitor = process.env.THINGY_MONITOR;
 
 /**
  * Adds the MQTT data to InfluxDB.
