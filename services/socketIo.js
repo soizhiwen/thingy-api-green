@@ -17,12 +17,14 @@ function getGreenhouseWebSocket(newsocket){
 }
 
 async function sendWebsocket(type) {
-    
-    if (type ='newNotification' && notificationSocketReceived){
+
+    if (type =='newNotification' && notificationSocketReceived){
         notificationSocket.emit("notificationData","newNotification"); 
+        console.log("Sending Greenhouse data through web socket");
     }
-    if (type ='greeenhouseData' && greenhouseSocketReceived){
+    if (type =='greeenhouseData' && greenhouseSocketReceived){
         greenhouseSocket.emit("greeenhouseData","newGreeenhouseData"); 
+        console.log("Sending Notifications through web socket");
     }
 
 }

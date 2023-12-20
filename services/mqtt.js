@@ -102,7 +102,7 @@ async function handleMqttData(message, topic) {
   const messageJson = JSON.parse(message.toString());
   const appIdM = messageJson.appId;
   const measurement = parseFloat(messageJson.data);
-
+  
   // If new data is received from the Monitor-thingy
   if (appIdsMeasurements.includes(appIdM) && topic === topicSubscribeMonitor) {
     await dbAddMQTTData(measurement, appIdM, thingy_monitor);
