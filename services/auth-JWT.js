@@ -8,6 +8,7 @@
 
 
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
 
 // Secret key for JWT
 const jwtSecret = 'ASecret';
@@ -103,5 +104,15 @@ async function getUserId(ctx) {
     }
 }
 
+/**
+ * Hashes a given password and returns it as a hexadecimal string.
+ *
+ * @param pw - password to hash
+ * @returns {Promise<string>} - hashed password
+ */
+async function hashPw(pw) {
+    return crypto.createHash('sha256').update(pw).digest('hex');
+}
 
-module.exports = { createToken, verifyToken, verifyAdminToken, getUserId };
+
+module.exports = { createToken, verifyToken, verifyAdminToken, getUserId, hashPw };

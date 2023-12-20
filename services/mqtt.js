@@ -8,6 +8,7 @@ const { dbAddMQTTData } = require("../services/db-mqtt");
 
 const mqtt = require("mqtt");
 const { notificationHandler } = require("./notification-service");
+const { sendWebsocket } = require("./socketIo");
 const options = {
   username: "green",
   password: "aCwHqUEp5J",
@@ -83,7 +84,6 @@ async function initMQTT() {
 
 
 const appIdsMeasurements = ["AIR_QUAL", "CO2_EQUIV", "TEMP", "HUMID"];
-//const appIdsDB = ["temperature", "humidity", "co2", "air_quality"];
 
 const lt = {
   "AIR_QUAL": "air_quality",
@@ -100,20 +100,21 @@ const lt = {
  */
 async function handleMqttData(message, topic) {
   const messageJson = JSON.parse(message.toString());
-  const appIdValue = messageJson.appId;
+  const appIdM = messageJson.appId;
   const measurement = parseFloat(messageJson.data);
 
   // If new data is received from the Monitor-thingy
-  if (appIdsMeasurements.includes(appIdValue) && topic === topicSubscribeMonitor) {
-    await dbAddMQTTData(measurement, appIdValue, thingy_monitor);
-    await notificationHandler(measurement, lt[appIdValue]);
+  if (appIdsMeasurements.includes(appIdM) && topic === topicSubscribeMonitor) {
+    await dbAddMQTTData(measurement, appIdM, thingy_monitor);
+    await notificationHandler(measurement, lt[appIdM]);
+    await sendWebsocket('greeenhouseData');
   }
 
   // If a button press is registered from the Notification-thingy
   if (messageJson.appId === "BUTTON" && measurement === 1 && topic === topicSubscribeNotification) {
     console.log("BUTTON PRESSED!")
 
-    // DISABLE BUZZER AND CHANGE LED BACK TO BLUE
+    // Enables Buzzer and changes LED on Notification thingy
     await disableBuzzer();
     await setLEDBlue();
   }

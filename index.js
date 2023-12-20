@@ -1,10 +1,23 @@
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const cors = require("@koa/cors");
+const { getNotificationWebSocket,getGreenhouseWebSocket } = require("./services/socketIo");
 
-const app = new Koa();
+var app = new Koa();
 
 const initMQTT = require("./services/mqtt").initMQTT;
+
+const {EventEmitter} = require('events');
+
+const emitter = new EventEmitter();
+
+emitter.on('send_mail', (payload) => {
+  console.log(payload);
+});
+
+emitter.emit('send_email', 'Test email');
+
+
 
 //Adding the routes
 const plantsRouter = require("./controllers/plants-controller");
@@ -32,6 +45,27 @@ app
   .use(authRouter.routes())
   .use(authRouter.allowedMethods());
 
-app.listen(8080, () => {
+
+const server = app.listen(8080,()=>{
   console.log(`Application running on port 8080`);
 });
+
+
+//socket.io
+
+const io = require('socket.io')(server,{
+  cors: {
+    origin: '*',
+  }
+});
+
+io.on('connection',(socket)=>{
+  socket.on("notificationData",()=>{
+    getNotificationWebSocket(socket);
+  })
+  socket.on("greeenhouseData",()=>{
+    getGreenhouseWebSocket(socket);
+  })
+
+})
+

@@ -35,6 +35,28 @@ async function checkValues(measurement, measurementType) {
 }
 
 
+const mTypes = {"temperature": 0, "humidity": 0, "co2": 0, "air_quality": 0};
+
+
+async function checkNotificationEvent(measurementType) {
+    if (mTypes.hasOwnProperty(measurementType)) {
+        mTypes[measurementType] += 1;
+        if (mTypes[measurementType] >= 4) {
+            // Reset the value to 0 when it reaches 4
+            mTypes[measurementType] = 0;
+            return true;
+        } else {
+            console.log("NOT YET REACHED NUMBER 4");
+        }
+    } else {
+        // Handle the case where measurementType is not present in mTypes
+        console.error("Measurement type not found:", measurementType);
+    }
+    return false;
+}
+
+
+
 /**
  * Main handler for notifications to client and thingy.
  *
@@ -45,25 +67,26 @@ async function notificationHandler(measurement, measurementType) {
 
     const { isInRange, retPlant } = await checkValues(measurement, measurementType);
     if (!isInRange) {
+        if (await checkNotificationEvent(measurementType)) {
 
-        // Create notification (& add to db)
-        const message = "The " + retPlant.name + "'s value for " + measurementType +
-            " is outside the defined bounds at " + measurement +"!";
-        const timestamp = new Date();
+            // Create notification (& add to db)
+            const message = "The " + retPlant.name + "'s value for " + measurementType +
+                " is outside the defined bounds at " + measurement + "!";
+            const timestamp = new Date();
 
-        const params = {message: message, timestamp: timestamp, plant_id: retPlant.id};
-        const notification = await dbCreateNotification(params);
+            const params = {message: message, timestamp: timestamp, plant_id: retPlant.id};
+            const notification = await dbCreateNotification(params);
 
-        console.log(notification);
+            console.log(notification);
 
-        // TODO: Send notification to Client (via WebSocket)
+            // TODO: Send notification to Client (via WebSocket)
 
 
+            // Set thingy_notification state
 
-        // Set thingy_notification state
-
-        // await require("./mqtt").enableBuzzer();
-        // await require("./mqtt").setLEDRed();
+            // await require("./mqtt").enableBuzzer();
+            // await require("./mqtt").setLEDRed();
+        }
     }
 }
 

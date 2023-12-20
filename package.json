@@ -18,10 +18,13 @@
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.1",
+    "koa-route": "^3.2.0",
     "koa-router": "^11.0.2",
+    "koa-websocket": "^7.0.0",
     "mqtt": "^5.1.2",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
-    "pg-format": "^1.0.4"
+    "pg-format": "^1.0.4",
+    "socket.io": "^4.7.2"
   }
 }
