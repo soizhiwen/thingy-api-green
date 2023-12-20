@@ -10,6 +10,7 @@ const { sendWebsocket } = require("./socketIo");
 
 /**
  * Checks whether the measured value is within the defined range of all plants.
+ * This function cannot handle a lot of plants with the same measurementType being wrong.
  *
  * @param measurement - measured value
  * @param measurementType - what kind of measurement
@@ -41,6 +42,7 @@ const slowDownNotification = 4; // The higher the value the slower new notificat
 /**
  * Slows down the notification according to 'slowDownNotification' value; '1' is about 15 seconds, thus, '4' equals to about 1 minute.
  * Returns true if one measurement type has reached the same value as 'slowDownNotification'.
+ * Not very effective as it doesn't account for multiple plants, but for demonstration purposes, it works.
  *
  * @param measurementType
  * @returns {Promise<boolean>}
