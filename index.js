@@ -11,7 +11,7 @@ var app = new Koa();
 
 const initMQTT = require("./services/mqtt").initMQTT;
 
-const spec = yamljs.load('./api_documentation/swaggerDocumentation.yaml');
+const spec = yamljs.load('./docs/api_documentation/API-Documentation-ASE23-GREEN-Swagger-v1.0.yaml');
 
 
 
