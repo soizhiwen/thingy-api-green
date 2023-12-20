@@ -23,4 +23,13 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=123123123
       - DOCKER_INFLUXDB_INIT_ORG=ASE2023-GREEN
       - DOCKER_INFLUXDB_INIT_BUCKET=thingy
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=xcqyzBumPDaNrzWz3Sjvdh-ZPNtw4zJlnsfsNkv1A5CxgRtCnwu_iS_Q0FzG4yBOKaVVeCu3nLBb30zrkF_29g==
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=qLtVPyAjCglHPDr39NTOdI9USChimMgTIxBAq21Xv8HC9QJ4MXo7H26ohlJdbm50XuHnTw_tieAXfPhvVq4gGQ==
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: hello@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: hello@123

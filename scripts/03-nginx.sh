@@ -44,6 +44,14 @@ server {
                 proxy_set_header Host $host;
                 proxy_cache_bypass $http_upgrade;
         }
+
+        location /pgadmin/ {
+            proxy_set_header X-Script-Name /pgadmin;
+            proxy_set_header X-Scheme $scheme;
+            proxy_set_header Host $host;
+            proxy_pass http://localhost:5050/;
+            proxy_redirect off;
+        }
 }
 '
 
