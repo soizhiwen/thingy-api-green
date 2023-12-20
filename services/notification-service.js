@@ -3,9 +3,9 @@
  */
 
 
-
 const { dbListPlants } = require("./db-plants");
 const { dbCreateNotification } = require("./db-notifications");
+const { sendWebsocket } = require("./socketIo");
 
 
 /**
@@ -85,8 +85,9 @@ async function notificationHandler(measurement, measurementType) {
             const notification = await dbCreateNotification(params);
             console.log(notification);
 
-            // TODO: Send notification to Client (via WebSocket)
-
+            
+            // Websocket call for new notification alert
+            await sendWebsocket('greeenhouseData');
 
 
             // Set thingy_notification state back to 'normal'

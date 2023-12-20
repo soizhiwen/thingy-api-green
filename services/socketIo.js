@@ -30,4 +30,4 @@ async function sendWebsocket(type) {
 
 
 
-module.exports = { sendWebsocket,getNotificationWebSocket,getGreenhouseWebSocket };
+module.exports = { sendWebsocket, getNotificationWebSocket, getGreenhouseWebSocket };

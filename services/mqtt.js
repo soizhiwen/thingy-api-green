@@ -5,10 +5,9 @@
 
 
 const { dbAddMQTTData } = require("../services/db-mqtt");
-
-const mqtt = require("mqtt");
 const { notificationHandler } = require("./notification-service");
-const { sendWebsocket } = require("./socketIo");
+const mqtt = require("mqtt");
+
 const options = {
   username: "green",
   password: "aCwHqUEp5J",
@@ -107,7 +106,6 @@ async function handleMqttData(message, topic) {
   if (appIdsMeasurements.includes(appIdM) && topic === topicSubscribeMonitor) {
     await dbAddMQTTData(measurement, appIdM, thingy_monitor);
     await notificationHandler(measurement, lt[appIdM]);
-    await sendWebsocket('greeenhouseData');
   }
 
   // If a button press is registered from the Notification-thingy

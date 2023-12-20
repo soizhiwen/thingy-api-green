@@ -120,4 +120,4 @@ createTables();
 
 module.exports = {
   pool
-}
+};
