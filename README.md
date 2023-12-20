@@ -1,5 +1,7 @@
 # thingy-api-green
 
+This project is part of the Advanced Software Engineering course at the University of Fribourg, AS23 - GREEN. 
+
 This project was generated with Node version 20.7.0.
 
 ## Development server
